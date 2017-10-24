@@ -1,5 +1,6 @@
 <h1 align="center">
-YOYO-Industrial-Team-Project
+Honour's Project
+Project Allocation Software
 </h1>
 
 ## Requirements
