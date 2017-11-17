@@ -1,5 +1,4 @@
 <h1 align="center">
-Honour's Project
 Project Allocation Software
 </h1>
 
