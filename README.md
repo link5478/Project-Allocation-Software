@@ -20,3 +20,9 @@ MariaDB (or MySQL)
 1. Run `php artisan migrate`
 1. Run `php artisan key:generate`
 1. To Serve on local host: Run `php artisan serve`
+
+
+## Test Login Details
+
+Email: test@email.com
+Password: password
