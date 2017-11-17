@@ -25,4 +25,5 @@ MariaDB (or MySQL)
 ## Test Login Details
 
 Email: test@email.com
+<br>
 Password: password
