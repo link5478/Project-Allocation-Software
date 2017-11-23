@@ -11,6 +11,9 @@
 |
 */
 
+use Illuminate\Routing\Router;
+
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -18,3 +21,14 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+/**
+ * AUTH ROUTES
+ */
+$router->group([
+    'middleware' => ['web', 'auth']
+], function (Router $router) {
+    $router->post('logout', 'Auth\LoginController@logout')->name('logout');
+
+});
