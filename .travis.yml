@@ -1,0 +1,31 @@
+language: php
+dist: trusty
+
+php:
+  - 7.1
+  - nightly
+
+before_script:
+  - cp .env.travis .env
+  - mysql -e "create database IF NOT EXISTS homestead;" -uroot;
+  - composer self-update
+  - composer install --no-interaction --prefer-dist
+  - php artisan cache:clear
+  - php artisan migrate:install --no-interaction -vvv
+  - php artisan key:generate
+
+script:
+ - php artisan migrate --env=testing --no-interaction -vvv
+ - php artisan db:seed --env=testing --no-interaction -vvv
+ - phpunit
+ - php artisan migrate:rollback --env=testing --no-interaction -vvv
+
+services:
+  - mysql
+
+notifications:
+  email:
+      recipients:
+        - ccheyne@dundee.ac.uk
+      on_success: never
+      on_failure: always
