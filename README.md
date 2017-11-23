@@ -2,6 +2,10 @@
 Project Allocation Software
 </h1>
 
+<p align="center">
+<a href="https://travis-ci.org/link5478/Project-Allocation-Software"><img src="https://travis-ci.org/link5478/Project-Allocation-Software.svg?branch=master" alt="Build Status"></a>
+</p>
+
 ## Requirements
 
 PHP 7.0 and later  
