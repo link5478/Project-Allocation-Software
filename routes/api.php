@@ -23,6 +23,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 $router->group([
     'as' => 'api.'
 ], function (Router $router) {
-
-
+    $router->get('/projects/{supervisorID}', 'APIController@supervisorGetProjects')->name('projects.supervisor_get');
+    $router->get('/projects/add/{name}/{desc}/{avail}/{supervisorID}', 'APIController@supervisorAddProject')->name('projects.supervisor_add');
 });

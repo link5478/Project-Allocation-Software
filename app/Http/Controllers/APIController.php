@@ -8,6 +8,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class APIController
 {
@@ -15,7 +18,7 @@ class APIController
     /**
      * Returns a list of projects assigned to a supervisor
      *
-     * /api/projects/
+     * /api/projects/101
      *
      * @param Request $request
      * @return $this
@@ -23,10 +26,10 @@ class APIController
     public function supervisorGetProjects(Request $request)
     {
         return DB::table('projects')
-            ->select('id')
-            ->select('name')
+            ->select('id', 'name')
             ->where('supervisor_ID', '=', $request->supervisorID)
             ->get();
+
     }
 
     /**
@@ -42,7 +45,7 @@ class APIController
         DB::table('projects')->insert(
             ['name' => $request->name,
                 'description' =>$request->desc,
-                'availability' => $request->available,
+                'availability' => $request->avail,
                 'supervisor_ID' => $request->supervisorID]
         );
     }
