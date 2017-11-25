@@ -18,6 +18,10 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
+            $table->integer('project_alloc')->nullable();
+            $table->tinyInteger('is_student')->default(0);
+            $table->tinyInteger('is_supervisor')->default(0);
+            $table->tinyInteger('is_coordinator')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
