@@ -57,7 +57,7 @@ class APIController
                 'availability' => $avail,
                 'supervisor_ID' => $supervisorID]
         );
-        return redirect('home');
+        return redirect('/supervisor/projects');
     }
 
 
