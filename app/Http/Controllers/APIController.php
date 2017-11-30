@@ -25,11 +25,15 @@ class APIController
      */
     public function supervisorGetProjects(Request $request)
     {
+        return $this->supervisorGetProjectsLocal($request->supervisorID);
+    }
+
+    public function supervisorGetProjectsLocal($id)
+    {
         return DB::table('projects')
             ->select('id', 'name')
-            ->where('supervisor_ID', '=', $request->supervisorID)
+            ->where('supervisor_ID', '=', $id)
             ->get();
-
     }
 
     /**
@@ -42,12 +46,18 @@ class APIController
      */
     public function supervisorAddProject(Request $request)
     {
+        return $this->supervisorAddProjectLocal($request->name, $request->desc, $request->avail, $request->supervisorID);
+    }
+
+    public function supervisorAddProjectLocal($name, $desc, $avail, $supervisorID)
+    {
         DB::table('projects')->insert(
-            ['name' => $request->name,
-                'description' =>$request->desc,
-                'availability' => $request->avail,
-                'supervisor_ID' => $request->supervisorID]
+            ['name' => $name,
+                'description' => $desc,
+                'availability' => $avail,
+                'supervisor_ID' => $supervisorID]
         );
+        return redirect('home');
     }
 
 
