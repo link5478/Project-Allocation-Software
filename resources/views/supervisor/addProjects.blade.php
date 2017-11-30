@@ -32,13 +32,13 @@
                     </div>
 
                     <div class="form-group{{ $errors->has('desc') ? ' has-error' : '' }}">
-                        <label for="desc">desc</label>
+                        <label for="desc">Description</label>
                         <input type="text" class="form-control" id="desc" name="desc"
                                placeholder="Example Description" required>
                     </div>
 
                     <div class="form-group{{ $errors->has('avail') ? ' has-error' : '' }}">
-                        <label for="avail">avail</label>
+                        <label for="avail">Number of Avaailable</label>
                         <input type="text" class="form-control" id="avail" name="avail"
                                placeholder="10" required>
                     </div>
@@ -51,7 +51,7 @@
                     </div>
 
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                        <button type="submit" class="btn btn-primary">Add Project</button>
                     </div>
 
                 </form>
