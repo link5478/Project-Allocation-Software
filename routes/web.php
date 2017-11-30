@@ -32,7 +32,6 @@ Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail'
 Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
-
 /**
  * AUTH ROUTES
  */
@@ -40,5 +39,6 @@ $router->group([
     'middleware' => ['web', 'auth']
 ], function (Router $router) {
     $router->post('logout', 'Auth\LoginController@logout')->name('logout');
-
+    $router->get('/supervisor/projects', 'DataController@supervisorMyProjects')->name('supervisor.projects');
+    $router->get('/supervisor/addProjects', 'DataController@supervisorAddProjects')->name('supervisor.addProjects');
 });
