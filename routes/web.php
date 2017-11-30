@@ -40,5 +40,5 @@ $router->group([
 ], function (Router $router) {
     $router->post('logout', 'Auth\LoginController@logout')->name('logout');
     $router->get('/supervisor/projects', 'DataController@supervisorMyProjects')->name('supervisor.projects');
-    $router->get('/supervisor/addProjects', 'DataController@supervisorAddProjects')->name('supervisor.addProjects');
+    $router->get('/supervisor/projects/add', 'DataController@supervisorAddProjects')->name('supervisor.addProjects');
 });
