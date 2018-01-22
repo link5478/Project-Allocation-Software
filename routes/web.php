@@ -39,6 +39,10 @@ $router->group([
     'middleware' => ['web', 'auth']
 ], function (Router $router) {
     $router->post('logout', 'Auth\LoginController@logout')->name('logout');
+
+    //SUPERVISOR
     $router->get('/supervisor/projects', 'DataController@supervisorMyProjects')->name('supervisor.projects');
     $router->get('/supervisor/projects/add', 'DataController@supervisorAddProjects')->name('supervisor.addProjects');
+    $router->get('/supervisor/projects/edit/{id}', 'DataController@supervisorEditProjects')->name('supervisor.editProjects/{id}');
+    
 });

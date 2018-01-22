@@ -12,6 +12,9 @@
                          <supervisor_project name="{{$d->name}}"></supervisor_project>
                     </div>
                     @endforeach
+
+                    <a href="{{ route('supervisor.addProjects') }}">ADD</a>
+
                 </div>
             </div>
         </div>

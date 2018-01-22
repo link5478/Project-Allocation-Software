@@ -6,7 +6,6 @@
 
                 <div class="panel-body">
                     <p>Name: {{name}}</p>
-                    <button>Edit</button>
                 </div>
             </div>
         </div>
