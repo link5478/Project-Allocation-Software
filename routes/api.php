@@ -24,7 +24,5 @@ $router->group([
     'as' => 'api.'
 ], function (Router $router) {
     $router->get('/projects/{supervisorID}', 'APIController@supervisorGetProjects')->name('projects.supervisor_get');
-    $router->put('/projects/add', 'APIController@supervisorAddProject')->name('projects.supervisor_add');
-    $router->put('/projects/edit', 'APIController@supervisorEditProject')->name('projects.supervisor_edit');
-
+    $router->get('projects', 'ProjectController@index');
 });

@@ -18,7 +18,7 @@ class CreateProjectsTable extends Migration
             $table->string('name');
             $table->string('description');
             $table->integer('availability');
-            $table->tinyInteger('hidden')->default(0);
+            $table->tinyInteger('hidden');
             $table->integer('supervisor_ID');
         });
     }
