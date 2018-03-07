@@ -8,6 +8,6 @@ use Illuminate\Http\Request;
 class Project extends Model
 {
     //
+    public $timestamps = false;
     protected $fillable = ['name', 'description', 'availability', 'hidden', 'supervisor_id'];
-
 }
