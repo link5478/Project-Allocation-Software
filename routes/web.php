@@ -40,9 +40,11 @@ $router->group([
 ], function (Router $router) {
     $router->post('logout', 'Auth\LoginController@logout')->name('logout');
 
-    //SUPERVISOR
-    $router->get('/supervisor/projects', 'DataController@supervisorMyProjects')->name('supervisor.projects');
-    $router->get('/supervisor/projects/add', 'DataController@supervisorAddProjects')->name('supervisor.addProjects');
-    $router->get('/supervisor/projects/edit/{id}', 'DataController@supervisorEditProjects')->name('supervisor.editProjects/{id}');
-    
+    $router->get('projects', 'ProjectController@index')->name('projects');
+    //$router->get('projects/{id}', 'ProjectController@show')->name('projects');
+    $router->get('projects/{id}/edit', 'ProjectController@edit')->name('projects.edit');
+    $router->put('projects/{project}', 'ProjectController@update')->name('projects.update');
+
+    $router->get('projects/add', 'ProjectController@add')->name('projects.add');
+    $router->put('projects/add/save', 'ProjectController@store')->name('projects.save');
 });
