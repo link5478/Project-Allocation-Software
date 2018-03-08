@@ -9,5 +9,5 @@ class Project extends Model
 {
     //
     public $timestamps = false;
-    protected $fillable = ['name', 'description', 'availability', 'hidden', 'supervisor_id'];
+    protected $fillable = ['name', 'description', 'availability', 'hidden', 'supervisor_ID'];
 }
