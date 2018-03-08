@@ -2,8 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
-use App\Http\Controllers\ProjectController;
-
 
 /*
 |--------------------------------------------------------------------------
