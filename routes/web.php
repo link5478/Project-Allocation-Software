@@ -39,12 +39,32 @@ $router->group([
     'middleware' => ['web', 'auth']
 ], function (Router $router) {
     $router->post('logout', 'Auth\LoginController@logout')->name('logout');
+});
 
-    $router->get('projects', 'ProjectController@index')->name('projects');
-    //$router->get('projects/{id}', 'ProjectController@show')->name('projects');
-    $router->get('projects/{id}/edit', 'ProjectController@edit')->name('projects.edit');
-    $router->put('projects/{project}', 'ProjectController@update')->name('projects.update');
+$router->group([
+    'middleware' => ['web', 'auth', 'supervisor']
+], function (Router $router) {
 
-    $router->get('projects/add', 'ProjectController@add')->name('projects.add');
-    $router->put('projects/add/save', 'ProjectController@store')->name('projects.save');
+    $router->get('my/projects', 'SupervisorController@index')->name('supervisor.projects');
+    $router->get('my/projects/{id}/edit', 'SupervisorController@edit')->name('supervisor.projects.edit');
+    $router->put('my/projects/{project}', 'SupervisorController@update')->name('supervisor.projects.update');
+
+    $router->get('my/projects/add', 'SupervisorController@add')->name('supervisor.projects.add');
+    $router->put('my/projects/add/save', 'SupervisorController@store')->name('supervisor.projects.save');
+
+    $router->get('my/projects/{id}/archive', 'SupervisorController@archive')->name('supervisor.projects.archive');
+    $router->get('my/projects/{id}/clone', 'SupervisorController@clone')->name('supervisor.projects.clone');
+
+
+    $router->get('archive/projects', 'ArchiveController@index')->name('archive.projects');
+    $router->get('archive/projects/{id}/restore', 'ArchiveController@restore')->name('archive.projects.restore');
+
+    $router->get('archive/project/{id}', 'ArchiveController@show')->name('archive.project');
+});
+
+$router->group([
+    'middleware' => ['web']
+], function (Router $router) {
+
+    $router->get('project/{id}', 'SupervisorController@show')->name('project');
 });
