@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProjectArchiveTable extends Migration
+class CreateArchivedProjectsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateProjectArchiveTable extends Migration
      */
     public function up()
     {
-        Schema::create('project_archive', function (Blueprint $table) {
+        Schema::create('archived_projects', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('description');
             $table->integer('availability');
-            $table->dateTime('archived');
+            $table->integer('archived_by');
         });
     }
 
@@ -29,6 +29,6 @@ class CreateProjectArchiveTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('project_archive');
+        Schema::dropIfExists('archived_projects');
     }
 }

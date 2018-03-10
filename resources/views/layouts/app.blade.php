@@ -36,7 +36,12 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        &nbsp;
+                        @auth
+                            @if(Auth::user()->is_supervisor == 1)
+                                <li><a href="{{ route('supervisor.projects') }}">My Projects</a></li>
+                                <li><a href="{{ route('archive.projects') }}">Archived Projects</a></li>
+                            @endif
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->

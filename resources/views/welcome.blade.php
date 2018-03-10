@@ -78,7 +78,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Yo Dawg
+                    Project Allocation Software
                 </div>
 
                 <div class="links">

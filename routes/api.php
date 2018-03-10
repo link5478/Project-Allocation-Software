@@ -3,7 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,6 +22,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 $router->group([
     'as' => 'api.'
 ], function (Router $router) {
-
-
 });
