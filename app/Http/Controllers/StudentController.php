@@ -18,8 +18,8 @@ class StudentController extends Controller
     public function index()
     {
         $supervisors = User::all('id', 'name', 'is_supervisor')->where('is_supervisor','=', '1');
-        $choice = $this->currentUserChoice()[0];
-        dd($choice);
+        $choice = $this->currentUserChoice();
+        $data = [];
         foreach($supervisors as $s)
         {
             $projects  = Project::all('id', 'name', 'description', 'supervisor_id')->where('supervisor_id', '=', $s->id);
@@ -29,12 +29,24 @@ class StudentController extends Controller
                 $is_choice = 'No';
 
                 if($choice->project1 == $p->id)
-                {}
+                {
+                    $is_choice = 'No';
+                }
+                else if($choice->project2 == $p->id)
+                {
+                    $is_choice = 'No';
+                }
+                else if($choice->project3 == $p->id)
+                {
+                    $is_choice = 'No';
+                }
                 $project = ['project_id' => $p->id, 'name'=> $p->name, 'description' => $p->description, 'is_choice' => $is_choice];
                 array_push($data["'".$s->name."'"], $project);
             }
         }
-        dd($data);
+
+
+        return view ('student.projects')->with('data', $data);
 
     }
 
@@ -51,8 +63,8 @@ class StudentController extends Controller
     // for now will only return 1 choice.
     public function currentUserChoice()
     {
-        $current = Choices::all()->where('student_id', '=', Auth::id());
-        if ($current->isEmpty())
+        $current = Choices::all()->where('student_id', '=', Auth::id())->first();
+        if ($current == null)
         {
             $Choices = new Choices();
             $Choices->student_id = Auth::id();
@@ -62,8 +74,6 @@ class StudentController extends Controller
             $Choices->additional_info = null;
             $Choices->created_at = Carbon::now();
             $Choices->updated_at = Carbon::now();
-            $Choices->save();
-
             return $Choices;
         }
         return $current;

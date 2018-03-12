@@ -41,7 +41,7 @@ class SupervisorController extends Controller
 
     public function update(Request $request, Project $project)
     {
-        if(Auth::user()->id != $project->supervisor_ID)
+        if(Auth::id() != $project->supervisor_id)
         {
             return redirect('home');
         }
@@ -66,6 +66,7 @@ class SupervisorController extends Controller
         {
             $project->hidden = '0';
         }
+
         $project->save();
         return redirect(route('supervisor.projects'))->with('message', 'Operation Successful !');
     }
@@ -103,7 +104,7 @@ class SupervisorController extends Controller
         $archived->name = $project->name;
         $archived->description = $project->description;
         $archived->availability = $project->availability;
-        $archived->archived_by = $project->supervisor_ID;
+        $archived->archived_by = $project->supervisor_id;
 
         $archived->save();
 
@@ -129,7 +130,7 @@ class SupervisorController extends Controller
         $clone->description = $project->description;
         $clone->availability = $project->availability;
         $clone->hidden = '1';
-        $clone->supervisor_ID= $project->supervisor_ID;
+        $clone->supervisor_id= $project->supervisor_id;
         $clone->save();
         return Redirect::back()->with('message', 'Operation Successful !');
     }
