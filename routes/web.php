@@ -62,6 +62,18 @@ $router->group([
     $router->get('archive/project/{id}', 'ArchiveController@show')->name('archive.project');
 });
 
+
+$router->group([
+    'middleware' => ['web', 'auth', 'student']
+], function (Router $router) {
+
+    $router->get('projects', 'StudentController@index')->name('student.projects');
+
+});
+
+
+
+
 $router->group([
     'middleware' => ['web']
 ], function (Router $router) {

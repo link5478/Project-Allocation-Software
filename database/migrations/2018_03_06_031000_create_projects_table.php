@@ -19,7 +19,7 @@ class CreateProjectsTable extends Migration
             $table->string('description');
             $table->integer('availability');
             $table->tinyInteger('hidden');
-            $table->integer('supervisor_ID');
+            $table->integer('supervisor_id');
         });
     }
 
