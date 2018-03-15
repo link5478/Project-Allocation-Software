@@ -62,6 +62,21 @@ $router->group([
     $router->get('archive/project/{id}', 'ArchiveController@show')->name('archive.project');
 });
 
+
+$router->group([
+    'middleware' => ['web', 'auth', 'student']
+], function (Router $router) {
+
+    $router->get('projects', 'StudentController@index')->name('student.projects');
+    $router->get('projects/{id}/interest', 'StudentController@addInterest')->name('student.add_interest');
+    $router->get('projects/choices', 'StudentController@viewChoices')->name('student.choices');
+    $router->put('projects/choices/{choice}', 'StudentController@update')->name('student.choices.update');
+    $router->get('interest_toggle', 'StudentController@interested_toggle')->name('interest_toggle');
+});
+
+
+
+
 $router->group([
     'middleware' => ['web']
 ], function (Router $router) {
