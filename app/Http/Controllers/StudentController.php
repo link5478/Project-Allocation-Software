@@ -107,26 +107,19 @@ class StudentController extends Controller
 
     public function update(Request $request, Choices $choice)
     {
+
         if(Auth::id() != $choice->student_id)
         {
             return redirect('home');
         }
-
-        if (!empty($request->input('choice1')))
-        {
-            $choice->project1 = $request->input('choice1');
-        }
-        if (!empty($request->input('choice2')))
-        {
-            $choice->project2 = $request->input('choice2');
-        }
-        if (!empty($request->input('choice3'))) {
-            $choice->project3 = $request->input('choice3');
-        }
+        $choice->project1 = $request->input('choice1');
+        $choice->project2 = $request->input('choice2');
+        $choice->project3 = $request->input('choice3');
 
         if (!empty($request->input('additional_info'))) {
             $choice->additional_info = $request->input('additional_info');
         }
+
         $choice->save();
         return Redirect::back()->with('message', 'Operation Successful !');
     }
