@@ -68,7 +68,10 @@ $router->group([
 ], function (Router $router) {
 
     $router->get('projects', 'StudentController@index')->name('student.projects');
-
+    $router->get('projects/{id}/interest', 'StudentController@addInterest')->name('student.add_interest');
+    $router->get('projects/choices', 'StudentController@viewChoices')->name('student.choices');
+    $router->put('projects/choices/{choice}', 'StudentController@update')->name('student.choices.update');
+    $router->get('interest_toggle', 'StudentController@interested_toggle')->name('interest_toggle');
 });
 
 
