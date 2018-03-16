@@ -15,14 +15,14 @@ class SupervisorController extends Controller
     // Shows all relevant projects to the logged account.
     public function index()
     {
-        $projects  = Project::all('id', 'name', 'hidden', 'supervisor_ID')->where('supervisor_ID', '=', Auth::user()->id);
+        $projects  = Project::all('id', 'name', 'hidden', 'supervisor_id')->where('supervisor_id', '=', Auth::user()->id);
         return view('supervisor.projects')->with('data', $projects);
     }
 
     public function show($id)
     {
         $project = Project::find($id);
-        $supervisor = User::find($project->supervisor_ID);
+        $supervisor = User::find($project->supervisor_id);
         $toReturn = [];
         $toReturn['name'] = $project->name;
         $toReturn['description'] = $project->description;
