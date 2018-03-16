@@ -41,9 +41,12 @@
                                 <li><a href="{{ route('supervisor.projects') }}">My Projects</a></li>
                                 <li><a href="{{ route('archive.projects') }}">Archived Projects</a></li>
                             @endif
-                                @if(Auth::user()->is_student == 1)
-                                    <li><a href="{{ route('student.projects') }}">View Projects</a></li>
-                                    <li><a href="{{ route('student.choices') }}">My Choices</a></li>
+                            @if(Auth::user()->is_student == 1)
+                                <li><a href="{{ route('student.projects') }}">View Projects</a></li>
+                                <li><a href="{{ route('student.choices') }}">My Choices</a></li>
+                            @endif
+                                @if(Auth::user()->is_coordinator == 1)
+                                    <li><a href="{{ route('coordinator.allocation') }}">Allocation</a></li>
                                 @endif
                         @endauth
                     </ul>
