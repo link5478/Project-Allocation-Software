@@ -27,10 +27,9 @@ class ArchiveController extends Controller
         $toReturn['name'] = $project->name;
         $toReturn['description'] = $project->description;
         $toReturn['availability'] = $project->availability;
+        $toReturn['id'] = $project->id;
         $toReturn['supervisor_name'] = $supervisor->name;
-
-        return $toReturn;
-//        return view('archive.project')->with('data', $toReturn);
+        return view('archive.project')->with('data', $toReturn);
     }
 
     public function restore($id)
