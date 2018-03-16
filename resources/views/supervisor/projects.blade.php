@@ -35,7 +35,7 @@
                         <div class="panel-heading" align="center">Want to add a new project? <a href="{{route('supervisor.projects.add')}}">Add</a></div>
                         @foreach ($data as $d)
                             <div class="panel-body">
-                                <a href="{{route('project', $d->id)}}"> {{$d->name}} </a>
+                                <a style = "color:black; font-size:20px;" href="{{route('project', $d->id)}}"> {{$d->name}}</a><br>
                                 <a href="{{route('supervisor.projects.edit', $d->id)}}">Edit</a>
                                 <a href="{{route('supervisor.projects.archive', $d->id)}}">Archive</a>
                                 <a href="{{route('supervisor.projects.clone', $d->id)}}">Clone</a>
