@@ -52,7 +52,7 @@
                                        @continue
                                     @endif
                                    <div class="card card-body"></div>
-                                    <h4 class="card-title">{{$val['name']}}
+                                       <h4 class="card-title"><a href="{{route('project', $val['project_id'])}}">{{$val['name']}}</a>
                                         @if($val['interested'] == 1)
                                             <a href="{{route('student.add_interest', $val['project_id'])}}">
                                                 <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
@@ -63,11 +63,6 @@
                                             </a>
                                         @endif
                                     </h4>
-                                    <p class="card-text">
-                                        {{$val['description']}}
-                                        <br>
-                                    </p>
-
                                @endforeach
                             </div>
                         </div>
