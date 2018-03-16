@@ -74,6 +74,13 @@ $router->group([
     $router->get('interest_toggle', 'StudentController@interested_toggle')->name('interest_toggle');
 });
 
+$router->group([
+    'middleware' => ['web', 'auth', 'coordinator']
+], function (Router $router) {
+
+    $router->get('allocation', 'CoordinatorController@index')->name('coordinator.allocation');
+});
+
 
 
 
