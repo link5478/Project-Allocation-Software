@@ -34,7 +34,7 @@
                     <div class="panel panel-default">
                         @foreach ($data as $d)
                             <div class="panel-body">
-                                <a href="{{route('archive.project', $d->id)}}"> {{$d->name}} </a>
+                                <a style="color:black; font-size:20px" href="{{route('archive.project', $d->id)}}"> {{$d->name}} </a><br>
                                 <a href="{{route('archive.projects.restore', $d->id)}}">Restore</a>
                             </div>
                         @endforeach
