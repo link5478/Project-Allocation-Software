@@ -3,11 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 
 class Project extends Model
 {
-    //
-    public $timestamps = false;
-    protected $fillable = ['name', 'description', 'availability', 'hidden', 'supervisor_id'];
+    protected $fillable = ['name', 'description', 'availability', 'hidden', 'supervisor_id', 'archived'];
+
+    public function Supervisor()
+    {
+        return User::find($this->supervisor_id);
+    }
 }

@@ -47,16 +47,6 @@ class StudentController extends Controller
 
     }
 
-    public function add($id)
-    {
-        $project = Project::find($id);
-
-    }
-
-    public function delete($id)
-    {
-    }
-
     // for now will only return 1 choice.
     public function currentUserChoice()
     {

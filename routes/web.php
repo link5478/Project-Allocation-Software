@@ -83,3 +83,6 @@ $router->group([
 
     $router->get('project/{id}', 'SupervisorController@show')->name('project');
 });
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

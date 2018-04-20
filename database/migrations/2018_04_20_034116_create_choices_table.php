@@ -15,12 +15,13 @@ class CreateChoicesTable extends Migration
     {
         Schema::create('choices', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('student_id');
-            $table->integer('project1')->nullable()->unsigned();
-            $table->integer('project2')->nullable()->unsigned();
-            $table->integer('project3')->nullable()->unsigned();
-            $table->text('additional_info')->nullable();
             $table->timestamps();
+            $table->unsignedInteger('student_id');
+            $table->unsignedInteger('project1')->nullable();
+            $table->unsignedInteger('project2')->nullable();
+            $table->unsignedInteger('project3')->nullable();
+            $table->unsignedInteger('session_id');
+            $table->text('additional_info')->nullable();
         });
     }
 

@@ -15,9 +15,11 @@ class CreateInterestsTable extends Migration
     {
         Schema::create('interests', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('student_id');
-            $table->integer('project_id');
             $table->timestamps();
+
+            $table->unsignedInteger('student_id');
+            $table->unsignedInteger('project_id');
+            $table->unsignedInteger('session_id');
         });
     }
 
