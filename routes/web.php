@@ -82,6 +82,7 @@ $router->group([
 ], function (Router $router) {
 
     $router->get('project/{id}', 'SupervisorController@show')->name('project');
+    $router->get('error', 'HomeController@SessionError')->name('error.session');
 });
 Auth::routes();
 

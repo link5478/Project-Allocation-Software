@@ -2,30 +2,32 @@
 
 namespace App\Http\Controllers;
 
-
-use App\ArchivedProject;
 use App\Interest;
-use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use App\Project;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\User;
-use App\Choices;
+use App\Choice;
+use App\Session;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Schema;
-use function Symfony\Component\VarDumper\Dumper\esc;
 
 class StudentController extends Controller
 {
     // Shows all relevant projects to the logged account.
     public function index()
     {
+        if(Session::GetSession() == null)
+        {
+            return view('error.session_invalid');
+        }
+
+
         $supervisors = User::all('id', 'name', 'is_supervisor')->where('is_supervisor','=', '1');
         $data = [];
         foreach($supervisors as $s)
         {
-            $projects  = Project::all('id', 'name', 'description', 'supervisor_id')->where('supervisor_id', '=', $s->id)->where('hidden', '=', 0);
+            $projects  = $s::Projects()->where('hidden', '=', 0);
             $data[$s->name] = [];
             foreach($projects as $p)
             {
@@ -50,19 +52,7 @@ class StudentController extends Controller
     // for now will only return 1 choice.
     public function currentUserChoice()
     {
-        $current = Choices::all()->where('student_id', '=', Auth::id())->first();
-        if ($current == null)
-        {
-            $Choices = new Choices();
-            $Choices->student_id = Auth::id();
-            $Choices->project1 = null;
-            $Choices->project2 = null;
-            $Choices->project3 = null;
-            $Choices->additional_info = null;
-            $Choices->created_at = Carbon::now();
-            $Choices->updated_at = Carbon::now();
-            return $Choices;
-        }
+        $current = Choice::all()->where('student_id', '=', Auth::id())->where('session_id', '=', Session::GetSession())->first();
         return $current;
     }
 
@@ -88,8 +78,13 @@ class StudentController extends Controller
 
     public function viewChoices()
     {
+        if(Session::GetSession() == null)
+        {
+            return view ('error.session_invalid');
+        }
+
         // should only be one choice really.
-        $choices = Choices::all()->where('student_id', '=', auth::id())->first();
+        $choices = Choice::all()->where('student_id', '=', auth::id())->first();
         $projects = Project::all('id', 'name', 'hidden')->where('hidden', '=', 0);
 
         return view('student.choices')->with('choice', $choices)->with('projects', $projects);
@@ -97,7 +92,6 @@ class StudentController extends Controller
 
     public function update(Request $request, Choices $choice)
     {
-
         if(Auth::id() != $choice->student_id)
         {
             return redirect('home');
@@ -110,6 +104,7 @@ class StudentController extends Controller
             $choice->additional_info = $request->input('additional_info');
         }
 
+        $choice->updated_at = Carbon::now();
         $choice->save();
         return Redirect::back()->with('message', 'Operation Successful !');
     }

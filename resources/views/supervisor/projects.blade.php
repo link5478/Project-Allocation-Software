@@ -32,7 +32,13 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading" align="center">My Projects</div>
                     <div class="panel panel-default">
-                        <div class="panel-heading" align="center">Want to add a new project? <a href="{{route('supervisor.projects.add')}}">Add</a></div>
+
+                        @if (App\Session::GetSession() != null)
+                            <div class="panel-heading" align="center">Want to add a new project? <a href="{{route('supervisor.projects.add')}}">Add</a></div>
+                        @else
+                            <div class="panel-heading" align="center">There are no active session for new projects</div>
+                        @endif
+
                         @foreach ($data as $d)
                             <div class="panel-body">
                                 <a href="{{route('project', $d->id)}}"> {{$d->name}} </a>

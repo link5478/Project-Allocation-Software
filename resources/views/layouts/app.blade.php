@@ -41,10 +41,14 @@
                                 <li><a href="{{ route('supervisor.projects') }}">My Projects</a></li>
                                 <li><a href="{{ route('archive.projects') }}">Archived Projects</a></li>
                             @endif
-                                @if(Auth::user()->is_student == 1)
-                                    <li><a href="{{ route('student.projects') }}">View Projects</a></li>
-                                    <li><a href="{{ route('student.choices') }}">My Choices</a></li>
-                                @endif
+                            @if(Auth::user()->is_student == 1)
+                                <li><a href="{{ route('student.projects') }}">View Projects</a></li>
+                                <li><a href="{{ route('student.choices') }}">My Choices</a></li>
+                            @endif
+                            @if(Auth::user()->is_coordinator == 1)
+                                    <li><a href="#">Allocation</a></li>
+                                    <li><a href="#">Session</a></li>
+                            @endif
                         @endauth
                     </ul>
 
@@ -60,6 +64,9 @@
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="{{ route('home') }}">Home</a>
+                                    </li>
                                     <li>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();

@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 
 use App\ArchivedProject;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Project;
 use Illuminate\Support\Facades\Auth;
-use App\User;
+use App\Session;
 use Illuminate\Support\Facades\Redirect;
 
 class SupervisorController extends Controller
@@ -15,14 +16,24 @@ class SupervisorController extends Controller
     // Shows all relevant projects to the logged account.
     public function index()
     {
-        $projects  = Project::all('id', 'name', 'hidden', 'supervisor_ID')->where('supervisor_ID', '=', Auth::user()->id);
+        $projects  = Project::all('id', 'name', 'hidden', 'supervisor_ID')->where('supervisor_id', '=', Auth::user()->id);
         return view('supervisor.projects')->with('data', $projects);
     }
 
     public function show($id)
     {
         $project = Project::find($id);
-        $supervisor = User::find($project->supervisor_ID);
+        if($project == null)
+        {
+            return null;
+        }
+        $supervisor = $project::Supervisor();
+
+        if($supervisor == null)
+        {
+            return null;
+        }
+
         $toReturn = [];
         $toReturn['name'] = $project->name;
         $toReturn['description'] = $project->description;
@@ -67,6 +78,9 @@ class SupervisorController extends Controller
             $project->hidden = '0';
         }
 
+        $project->updated_at = Carbon::now();
+        $project->session_id = Session::GetSession();
+
         $project->save();
         return redirect(route('supervisor.projects'))->with('message', 'Operation Successful !');
     }
@@ -86,6 +100,7 @@ class SupervisorController extends Controller
 
         $project = new Project();
         $project->fill($request->all());
+        $project->fill(Session::GetSession());
         $project->save();
 
         return redirect(route('supervisor.projects'))->with('message', 'Operation Successful !');
@@ -100,26 +115,16 @@ class SupervisorController extends Controller
     {
         $project = Project::find($id);
 
-        $archived = new ArchivedProject();
-        $archived->name = $project->name;
-        $archived->description = $project->description;
-        $archived->availability = $project->availability;
-        $archived->archived_by = $project->supervisor_id;
-
-        $archived->save();
-
-        // If you dont want to delete the previous project, then you want to delete this.
-        // I assume archiving means you do want to remove the project from a normal list.
-        $project->delete();
-
-        if($archived = ArchivedProject::find($archived->id))
+        if($project == null)
         {
-            return Redirect::back()->with('message', 'Operation Successful !');
+            return Redirect::back()->with('error', 'Something went wrong. Try again!');
         }
-        else
-        {
-            return Redirect::back()->with('message', 'Operation Failed !');
-        }
+
+        $project->supervisor_id = auth::id();
+        $project->archived = 1;
+
+        $project->save();
+        return Redirect::back()->with('message', 'Operation Successful!');
     }
 
     public function clone($id)
@@ -131,6 +136,7 @@ class SupervisorController extends Controller
         $clone->availability = $project->availability;
         $clone->hidden = '1';
         $clone->supervisor_id= $project->supervisor_id;
+        $clone->session_id = $project->session_id;
         $clone->save();
         return Redirect::back()->with('message', 'Operation Successful !');
     }
