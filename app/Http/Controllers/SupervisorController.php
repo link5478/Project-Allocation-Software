@@ -16,7 +16,7 @@ class SupervisorController extends Controller
     // Shows all relevant projects to the logged account.
     public function index()
     {
-        $projects  = Project::all('id', 'name', 'hidden', 'supervisor_ID')->where('supervisor_id', '=', Auth::user()->id);
+        $projects  = Project::all('id', 'name', 'hidden', 'supervisor_id', 'archived')->where('supervisor_id', '=', Auth::id())->where('archived', '=', 0);
         return view('supervisor.projects')->with('data', $projects);
     }
 
@@ -27,7 +27,7 @@ class SupervisorController extends Controller
         {
             return null;
         }
-        $supervisor = $project::Supervisor();
+        $supervisor = $project::Supervisor(auth::id());
 
         if($supervisor == null)
         {
@@ -100,15 +100,10 @@ class SupervisorController extends Controller
 
         $project = new Project();
         $project->fill($request->all());
-        $project->fill(Session::GetSession());
+        $project->session_id = Session::GetSession();
         $project->save();
 
         return redirect(route('supervisor.projects'))->with('message', 'Operation Successful !');
-    }
-
-    public function archives()
-    {
-        $archived = ArchivedProject::all();
     }
 
     public function archive($id)

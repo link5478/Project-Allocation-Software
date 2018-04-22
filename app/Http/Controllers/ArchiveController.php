@@ -14,7 +14,7 @@ class ArchiveController extends Controller
     // Shows all relevant projects to the logged account.
     public function index()
     {
-        $projects  = Project::all('id', 'name')->where('archived', '=', 1);
+        $projects  = Project::all('id', 'name', 'archived')->where('archived', '=', '1');
         return view('archive.projects')->with('data', $projects);
     }
 

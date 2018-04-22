@@ -8,8 +8,8 @@ class Project extends Model
 {
     protected $fillable = ['name', 'description', 'availability', 'hidden', 'supervisor_id', 'archived'];
 
-    public function Supervisor()
+    public static function Supervisor($id)
     {
-        return User::find($this->supervisor_id);
+        return User::find($id);
     }
 }

@@ -56,7 +56,7 @@
 
                     <div class="form-group{{ $errors->has('hidden') ? ' has-error' : '' }}">
                         <label for="hidden">Hidden</label> <br>
-                        @if ($project->hidden === '1')
+                        @if ($project->hidden == 1)
                             <input type="checkbox" class="form-inline" id="hidden" name="hidden" checked>
                         @else
                             <input type="checkbox" class="form-inline" id="hidden" name="hidden">

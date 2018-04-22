@@ -27,7 +27,7 @@ class StudentController extends Controller
         $data = [];
         foreach($supervisors as $s)
         {
-            $projects  = $s::Projects()->where('hidden', '=', 0);
+            $projects  = $s::Projects(auth::id())->where('hidden', '=', 0);
             $data[$s->name] = [];
             foreach($projects as $p)
             {
