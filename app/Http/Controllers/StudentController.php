@@ -104,7 +104,7 @@ class StudentController extends Controller
             $choice->additional_info = $request->input('additional_info');
         }
 
-        $choice->updated_at = Carbon::now();
+        $choice->updated_at = Carbon::now()->toDateTimeString();
         $choice->save();
         return Redirect::back()->with('message', 'Operation Successful !');
     }

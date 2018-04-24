@@ -78,7 +78,8 @@ class SupervisorController extends Controller
             $project->hidden = '0';
         }
 
-        $project->updated_at = Carbon::now();
+        $project->updated_at = Carbon::now()->toDateTimeString();
+        $project->updated_at = Carbon::now()->toDateTimeString();
         $project->session_id = Session::GetSession();
 
         $project->save();
@@ -101,6 +102,8 @@ class SupervisorController extends Controller
         $project = new Project();
         $project->fill($request->all());
         $project->session_id = Session::GetSession();
+        $project->created_at = Carbon::now()->toDateTimeString();
+        $project->updated_at = Carbon::now()->toDateTimeString();
         $project->save();
 
         return redirect(route('supervisor.projects'))->with('message', 'Operation Successful !');

@@ -74,6 +74,16 @@ $router->group([
     $router->get('interest_toggle', 'StudentController@interested_toggle')->name('interest_toggle');
 });
 
+$router->group([
+    'middleware' => ['web', 'auth', 'coordinator']
+], function (Router $router) {
+
+    $router->get('sessions', 'CoordinatorController@ShowSessions')->name('coordinator.sessions');
+    $router->post('sessions/create', 'CoordinatorController@CreateSession')->name('coordinator.sessions.create');
+    $router->put('sessions/update', 'CoordinatorController@UpdateSession')->name('coordinator.sessions.update');
+
+});
+
 
 
 

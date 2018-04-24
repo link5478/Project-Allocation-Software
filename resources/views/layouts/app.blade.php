@@ -46,8 +46,8 @@
                                 <li><a href="{{ route('student.choices') }}">My Choices</a></li>
                             @endif
                             @if(Auth::user()->is_coordinator == 1)
+                                    <li><a href="{{ route('coordinator.sessions') }}">Session</a></li>
                                     <li><a href="#">Allocation</a></li>
-                                    <li><a href="#">Session</a></li>
                             @endif
                         @endauth
                     </ul>
