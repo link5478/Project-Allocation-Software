@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Session extends Model
 {
-    protected $fillable = ['start', 'end', 'invalid'];
+    protected $fillable = ['name', 'start', 'end', 'invalid'];
 
     // slow probably.
     public static function GetSession()
