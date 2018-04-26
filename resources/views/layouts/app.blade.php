@@ -37,11 +37,12 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
 
+                        <li><a href="">{{App\Session::GetSession()->name}}</a></li>
 
+                        <li><a href="{{ route('home') }}">Home</a></li>
 
                         @auth
                             @if(Auth::user()->is_supervisor == 1)
-                                <li><a href="">{{App\Session::GetSession()->name}}</a></li>
                                 <li><a href="{{ route('supervisor.projects') }}">My Projects</a></li>
                                 <li><a href="{{ route('archive.projects') }}">Archived Projects</a></li>
                             @endif
@@ -64,13 +65,10 @@
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                    {{ Auth::user()->fname }} <span class="caret"></span>
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="{{ route('home') }}">Home</a>
-                                    </li>
                                     <li>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
