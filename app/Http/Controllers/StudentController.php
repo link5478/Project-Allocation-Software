@@ -23,12 +23,12 @@ class StudentController extends Controller
         }
 
 
-        $supervisors = User::all('id', 'name', 'is_supervisor')->where('is_supervisor','=', '1');
+        $supervisors = User::all('id', 'fname', 'is_supervisor')->where('is_supervisor','=', '1');
         $data = [];
         foreach($supervisors as $s)
         {
             $projects  = $s::Projects(auth::id())->where('hidden', '=', 0);
-            $data[$s->name] = [];
+            $data[$s->fname] = [];
             foreach($projects as $p)
             {
                 $interest = Interest::all()->where('student_id', '=', Auth::id())->where('project_id', '=', $p->id)->first();
@@ -42,7 +42,7 @@ class StudentController extends Controller
                     }
                 }
                 $project = ['project_id' => $p->id, 'name'=> $p->name, 'description' => $p->description, 'interested' => $is_interested];
-                array_push($data[$s->name], $project);
+                array_push($data[$s->fname], $project);
             }
         }
         return view ('student.projects')->with('data', $data);

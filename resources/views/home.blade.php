@@ -14,26 +14,30 @@
                         </div>
                     @endif
                         <p>
-                            Current Session: {{App\Session::GetSession()->name}} <br>
-                            Start Date: <br>
-                            End Date:   <br>
+                            Current Session: {{App\Session::GetSession()->name}}<br>
+                            Start Date: {{App\Session::GetSession()->start}}<br>
+                            End Date: {{App\Session::GetSession()->end}}<br>
                         </p>
+                        <br>
 
                         @auth
                             @if(Auth::user()->is_supervisor == 1)
                                 <br> <u>SUPERVISOR</u>
                                 <br> Projects that you wish to oversee this session can be created and modified under "My Projects"
+                                <br> You may archive projects, or retrieve archived projects from "Archived Projects"
 
                             @endif
+                        <br>
                             @if(Auth::user()->is_student == 1)
                                 <br> <u>STUDENT</u>
                                 <br> You can select which projects you would like to do which can be found under "My Choices"
                                 <br> A list of all projects can be found under the "View Projects" header
 
                             @endif
+                        <br>
                             @if(Auth::user()->is_coordinator == 1)
-                                    <br> <u>Project Coordinator</u>
-                                    <br> A project session can be created under " ". A session must be created in order for students to make their project choices
+                                    <br> <u>PROJECT COORDINATOR</u>
+                                    <br> A project session can be created under "Session". A session must be created in order for students to make their project choices
                                     <br> Additionally students will have to be added to a session manually
                                     <br> Allocating projects to students can be done using the Allocation tool found under "Allocation"
 

@@ -17,8 +17,8 @@ class CreateSessionsTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->string('name');
-            $table->dateTime('start');
-            $table->dateTime('end');
+            $table->date('start');
+            $table->date('end');
         });
     }
 
