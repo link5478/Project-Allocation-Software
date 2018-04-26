@@ -15,11 +15,11 @@ class Session extends Model
     {
         $now = Carbon::now()->toDateTimeString();
         $session = Session::all()->where('start', '<',$now)->where('end', '>',
-            $now)->first();
+            $now)->last();
 
         if($session == null)
             return null;
         else
-            return $session->id;
+            return $session;
     }
 }

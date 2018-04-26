@@ -28,16 +28,20 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                    <a href="{{ url('/home') }}">
+                        <img src = "https://imgur.com/74djVYg.png" alt="University of Dundee P.A.S" width="80" height="80">
                     </a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
+
+
+
                         @auth
                             @if(Auth::user()->is_supervisor == 1)
+                                <li><a href="">{{App\Session::GetSession()->name}}</a></li>
                                 <li><a href="{{ route('supervisor.projects') }}">My Projects</a></li>
                                 <li><a href="{{ route('archive.projects') }}">Archived Projects</a></li>
                             @endif
