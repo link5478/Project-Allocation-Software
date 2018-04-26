@@ -55,12 +55,10 @@
                     </div>
 
                     <div class="form-group{{ $errors->has('hidden') ? ' has-error' : '' }}">
-                        <label for="hidden">Hidden</label> <br>
-                        @if ($project->hidden == 1)
-                            <input type="checkbox" class="form-inline" id="hidden" name="hidden" checked>
-                        @else
-                            <input type="checkbox" class="form-inline" id="hidden" name="hidden">
-                        @endif
+                        <label for="hidden">Hidden</label>
+                        <input type="text" class="form-control" id="hidden" name="hidden"
+                               placeholder="0"
+                               value="{{$project->hidden}}" required>
                     </div>
 
                     <div class="form-group{{ $errors->has('availability') ? ' has-error' : '' }}">
@@ -68,6 +66,15 @@
                         <input type="text" class="form-control" id="availability" name="availability"
                                placeholder="{{$project->availability}}"
                                value="{{ $project->availability }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="session_id">Session</label>
+                        <select class="form-control" name="session_id" id = "session_id">
+                            @foreach(App\Session::ValidSessions() as $session)
+                                <option value="{{$session->id}}">{{$session->name}}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div class="form-group">

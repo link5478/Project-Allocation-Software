@@ -22,7 +22,6 @@ class StudentController extends Controller
             return view('error.session_invalid');
         }
 
-
         $supervisors = User::all('id', 'name', 'is_supervisor')->where('is_supervisor','=', '1');
         $data = [];
         foreach($supervisors as $s)
@@ -47,13 +46,6 @@ class StudentController extends Controller
         }
         return view ('student.projects')->with('data', $data);
 
-    }
-
-    // for now will only return 1 choice.
-    public function currentUserChoice()
-    {
-        $current = Choice::all()->where('student_id', '=', Auth::id())->where('session_id', '=', Session::GetSession())->first();
-        return $current;
     }
 
     public function addInterest($id)
@@ -83,22 +75,41 @@ class StudentController extends Controller
             return view ('error.session_invalid');
         }
 
-        // should only be one choice really.
-        $choices = Choice::all()->where('student_id', '=', auth::id())->first();
+        // valid sessions only.
+        $sessions = Session::all()->where('invalid', '=', 0);
+
+        // foreach valid session we want to see if the user has a choice associated with it. as in, did the coordinator add
+        // them to the choices.
+
+        $choices = [];
+        foreach($sessions as $session)
+        {
+            // should only be 1 choice per user per session.
+            $choice = Choice::all()->where('session_id', '=', $session->id)->where('student_id', '=', auth::id())->first();
+
+            if($choice != null)
+            {
+                $data = [];
+                $data['choice'] = $choice;
+                $data['session'] = $session;
+
+                array_push($choices, $data);
+            }
+        }
         $projects = Project::all('id', 'name', 'hidden')->where('hidden', '=', 0);
 
-        return view('student.choices')->with('choice', $choices)->with('projects', $projects);
+        return view('student.choices')->with('choices', $choices)->with('projects', $projects);
     }
 
-    public function update(Request $request, Choices $choice)
+    public function update(Request $request, Choice $choice)
     {
-        if(Auth::id() != $choice->student_id)
-        {
-            return redirect('home');
-        }
-        $choice->project1 = $request->input('choice1');
-        $choice->project2 = $request->input('choice2');
-        $choice->project3 = $request->input('choice3');
+        $choice1 = $request->input('choice1');
+        $choice2 = $request->input('choice2');
+        $choice3 = $request->input('choice3');
+
+        $choice->project1 = $choice1 == "0" ? null : $choice1;
+        $choice->project2 = $choice2 == "0" ? null : $choice2;
+        $choice->project3 = $choice3 == "0" ? null : $choice3;
 
         if (!empty($request->input('additional_info'))) {
             $choice->additional_info = $request->input('additional_info');

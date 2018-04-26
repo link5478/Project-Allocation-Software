@@ -22,4 +22,19 @@ class User extends Authenticatable
     {
         return Project::all()->where('supervisor_id', '=', id)->where('archived', '=', 1);
     }
+
+    public static function ChoicePerSession($id)
+    {
+        $session = Session::GetSession();
+
+        if($session == null)
+        {
+            return null;
+        }
+
+        $choice = Choice::all()->where('session_id', '=', $session->id)->where('student_id', '=', $id)->last();
+
+        return $choice;
+
+    }
 }

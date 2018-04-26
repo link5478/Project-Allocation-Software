@@ -43,6 +43,11 @@
                         <div class="panel-heading" align="center">Supervisor In Charge</div>
                         <div class="panel-body" align="center">{{$data['supervisor_name']}}</div>
                     </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading" align="center">Session</div>
+                        <div class="panel-body" align="center">{{$data['session']}}</div>
+                    </div>
                 </div>
             </div>
         </div>

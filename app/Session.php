@@ -14,12 +14,17 @@ class Session extends Model
     public static function GetSession()
     {
         $now = Carbon::now()->toDateTimeString();
-        $session = Session::all()->where('start', '<',$now)->where('end', '>',
+        $session = Session::all()->where('start', '<', $now)->where('end', '>',
             $now)->last();
 
-        if($session == null)
+        if ($session == null)
             return null;
         else
             return $session;
+    }
+
+    public static function ValidSessions()
+    {
+        return Session::all()->where('invalid', '=', 0);
     }
 }

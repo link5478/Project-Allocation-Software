@@ -80,7 +80,7 @@ $router->group([
 
     $router->get('sessions', 'CoordinatorController@ShowSessions')->name('coordinator.sessions');
     $router->post('sessions/create', 'CoordinatorController@CreateSession')->name('coordinator.sessions.create');
-    $router->put('sessions/update', 'CoordinatorController@UpdateSession')->name('coordinator.sessions.update');
+    $router->put('sessions/update/{session}', 'CoordinatorController@UpdateSession')->name('coordinator.sessions.update');
 
 });
 

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Interest extends Model
 {
-    protected $fillable = ['student_id', 'project_id', 'session_id'];
+    protected $fillable = ['student_id', 'project_id'];
 
     public function Student()
     {
@@ -16,10 +16,5 @@ class Interest extends Model
     public function Project()
     {
         return Project::find($this->project_id);
-    }
-
-    public function Session()
-    {
-        return Session::find($this->session_id);
     }
 }

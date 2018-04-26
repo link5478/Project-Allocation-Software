@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
-use App\ArchivedProject;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Project;
@@ -27,7 +25,7 @@ class SupervisorController extends Controller
         {
             return null;
         }
-        $supervisor = $project::Supervisor(auth::id());
+        $supervisor = $project::Supervisor($project->supervisor_id);
 
         if($supervisor == null)
         {
@@ -40,6 +38,8 @@ class SupervisorController extends Controller
         $toReturn['availability'] = $project->availability;
         $toReturn['hidden'] = $project->hidden;
         $toReturn['supervisor_name'] = $supervisor->name;
+        $session = Session::find($project->session_id);
+        $toReturn['session'] = $session->name;
 
         return view('supervisor.project')->with('data', $toReturn);
     }
@@ -47,7 +47,7 @@ class SupervisorController extends Controller
     public function edit($id)
     {
         $project = Project::find($id);
-        return view('supervisor.projects_edit', compact('project'));
+        return view('supervisor.projects_edit')->with('project', $project);
     }
 
     public function update(Request $request, Project $project)
@@ -57,30 +57,9 @@ class SupervisorController extends Controller
             return redirect('home');
         }
 
-        if (!empty($request->input('name')))
-        {
-            $project->name = $request->input('name');
-        }
-        if (!empty($request->input('description')))
-        {
-            $project->description = $request->input('description');
-        }
-        if (!empty($request->input('availability'))) {
-            $project->availability = $request->input('availability');
-        }
-
-        if($request->has('hidden'))
-        {
-            $project->hidden = '1';
-        }
-        else
-        {
-            $project->hidden = '0';
-        }
-
+        $project->fill($request->all());
+        $project->session_id = $request->session_id;
         $project->updated_at = Carbon::now()->toDateTimeString();
-        $project->updated_at = Carbon::now()->toDateTimeString();
-        $project->session_id = Session::GetSession();
 
         $project->save();
         return redirect(route('supervisor.projects'))->with('message', 'Operation Successful !');
@@ -101,7 +80,8 @@ class SupervisorController extends Controller
 
         $project = new Project();
         $project->fill($request->all());
-        $project->session_id = Session::GetSession();
+        $project->session_id = $request->session_id;
+        $project->archived = 0;
         $project->created_at = Carbon::now()->toDateTimeString();
         $project->updated_at = Carbon::now()->toDateTimeString();
         $project->save();
@@ -135,6 +115,7 @@ class SupervisorController extends Controller
         $clone->hidden = '1';
         $clone->supervisor_id= $project->supervisor_id;
         $clone->session_id = $project->session_id;
+        $clone->updated_at = Carbon::now()->toDateTimeString();
         $clone->save();
         return Redirect::back()->with('message', 'Operation Successful !');
     }

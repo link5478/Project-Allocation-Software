@@ -79,6 +79,15 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="session_id">Session</label>
+                        <select class="form-control" name="session_id" id = "session_id">
+                            @foreach(App\Session::ValidSessions() as $session)
+                                <option value="{{$session->id}}">{{$session->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
                         <button type="submit" class="btn btn-primary">Update Project</button>
                     </div>
 

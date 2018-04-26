@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Session;
 use App\User;
 use App\Choice;
+use Illuminate\Support\Facades\Redirect;
 
 class CoordinatorController extends Controller
 {
@@ -20,12 +21,11 @@ class CoordinatorController extends Controller
         $data['sessions'] = [];
         foreach($sessions as $s)
         {
-            $start = Carbon::parse($s->start);
-            $end = Carbon::parse($s->end);
 
             $data['sessions'][$s->id] = [];
-            $data['sessions'][$s->id]['start'] = $start->year. '-' .$start->month. '-' .$start->day;
-            $data['sessions'][$s->id]['end'] = $end->year. '-' .$end->month. '-' .$end->day;
+            $data['sessions'][$s->id]['name'] = $s->name;
+            $data['sessions'][$s->id]['start'] = Carbon::parse($s->start)->format('Y-m-d');
+            $data['sessions'][$s->id]['end'] = Carbon::parse($s->end)->format('Y-m-d');
             $data['sessions'][$s->id]['students'] = [];
 
             $choicesPerSession = Choice::all()->where('session_id', '=', $s->id);
@@ -56,25 +56,55 @@ class CoordinatorController extends Controller
         return view('coordinator.session')->with('data', $data);
     }
 
-    public function UpdateSession(Request $request)
+    public function UpdateSession(Request $request, Session $session)
     {
+        $session->fill($request->all());
+        $session->updated_at = Carbon::now()->toDateTimeString();
+        $session->save();
 
+        $students = $request->input('student');
+
+        foreach($students as $student)
+        {
+            if($student != "0") {
+                $choice = Choice::all()->where('session_id', '=', $session->id)->where('student_id', '=', $student)->first();
+                if ($choice == null)
+                {
+                    $choice = new Choice();
+                    $choice->student_id = $student;
+                    $choice->project1 = null;
+                    $choice->project2 = null;
+                    $choice->project3 = null;
+                    $choice->additional_info = null;
+                    $choice->session_id = $session->id;
+                    $choice->created_at = Carbon::now()->toDateTimeString();
+                    $choice->updated_at = Carbon::now()->toDateTimeString();
+                    $choice->save();
+                }
+                else
+                {
+                    $choice->updated_at = Carbon::now()->toDateTimeString();
+                    $choice->save();
+                }
+            }
+        }
+
+        $choices = Choice::all()->where('session_id', '=', $session->id);
+
+        // if user has a choice but wasnt part of the list then we remove them.
+        foreach($choices as $choice)
+        {
+            if(!in_array($choice->student_id, $students))
+            {
+                $choice->delete();
+            }
+        }
+
+        return Redirect::back()->with('message', 'Operation Successful!');
     }
 
     public function CreateSession(Request $request)
     {
-        if (empty($request->input('start'))) {
-            return view('home');
-        }
-
-        if (empty($request->input('end'))) {
-            return view('home');
-        }
-
-        if (empty($request->input('students'))) {
-            return view('home');
-        }
-
         $students = $request->input('students');
 
         $session = new Session();
@@ -82,21 +112,25 @@ class CoordinatorController extends Controller
         $session->end = $request->input('end');
         $session->created_at = Carbon::now()->toDateTimeString();
         $session->updated_at = Carbon::now()->toDateTimeString();
+        $session->name = $request->input('name');
+        $session->invalid = 0;
         $session->save();
 
         foreach($students as $s)
         {
-            $choice = new Choice();
-            $choice->student_id = $s->id;
-            $choice->project1 = null;
-            $choice->project2 = null;
-            $choice->project3 = null;
-            $choice->additional_info = null;
-            $choice->session_id = $session->id;
-            $choice->created_at = Carbon::now()->toDateTimeString();
-            $choice->updated_at = Carbon::now()->toDateTimeString();
+            if($s != "0") {
+                $choice = new Choice();
+                $choice->student_id = $s->id;
+                $choice->project1 = null;
+                $choice->project2 = null;
+                $choice->project3 = null;
+                $choice->additional_info = null;
+                $choice->session_id = $session->id;
+                $choice->created_at = Carbon::now()->toDateTimeString();
+                $choice->updated_at = Carbon::now()->toDateTimeString();
 
-            $choice->save();
+                $choice->save();
+            }
         }
     }
 }

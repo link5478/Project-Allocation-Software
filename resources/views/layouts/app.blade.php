@@ -41,7 +41,10 @@
 
                         @auth
                             @if(Auth::user()->is_supervisor == 1)
-                                <li><a href="">{{App\Session::GetSession()->name}}</a></li>
+                                @if(App\Session::GetSession() != null)
+                                    <li><a href="">{{App\Session::GetSession()->name}}</a></li>
+                                @endif
+
                                 <li><a href="{{ route('supervisor.projects') }}">My Projects</a></li>
                                 <li><a href="{{ route('archive.projects') }}">Archived Projects</a></li>
                             @endif

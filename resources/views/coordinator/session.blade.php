@@ -7,22 +7,22 @@
 
         <div class="panel panel-default">
             <div class="panel-body">
-                <form action="{{ route('coordinator.sessions.update')}}" method="POST" enctype="multipart/form-data" class="form-horizontal">
+                <form action="{{ route('coordinator.sessions.update', $key)}}" method="POST" enctype="multipart/form-data" class="form-horizontal">
                     {{ csrf_field() }}
                     {{ method_field('PUT') }}
-                    <label for="session_id">Session ID</label>
-                    <input type="text" name="session_id" id="session_id" value="{{$key}}" disabled>
+                    <label for="name">Session Name</label>
+                    <input type="text" name="name" id="name" value="{{$value['name']}}">
 
                     <div class="form-group row">
-                        <label for="start_date">Start Date</label>
-                        <input class="form-control" id="start_date"  name="start_date" type="date" value="{{$value['start']}}">
-                        <label for="end_date">End Date</label>
-                        <input class="form-control" id="end_date"  name="end_date" type="date" value="{{$value['end']}}">
+                        <label for="start">Start Date</label>
+                        <input class="form-control" id="start"  name="start" type="date" value="{{$value['start']}}">
+                        <label for="end">End Date</label>
+                        <input class="form-control" id="end"  name="end" type="date" value="{{$value['end']}}">
                     </div>
 
                     <div class="form-group row">
                         <label for="students">Students</label>
-                        <select class="form-control" id="students" name="students" multiple>
+                        <select class="form-control" id="student" name="student[]" multiple>
                             <option value="0">None</option>
                             @foreach($data['students'] as $s)
                                 <option value="{{$s['id']}}"   @if(in_array($s, $value['students'])) selected @endif>
@@ -38,12 +38,14 @@
         @endforeach
 
             <form action="{{ route('coordinator.sessions.create')}}" method="POST" enctype="multipart/form-data" class="form-horizontal">
+                <label for="session_name">Session Name</label>
+                <input type="text" name="session_name" id="session_name" value="">
 
                 <div class="form-group">
                     <label for="start_date">Start Date</label>
-                    <input id="start_date"  name="start_date" type="date" value="{{$value['start']}}">
+                    <input id="start_date"  name="start_date" type="date" value="">
                     <label for="end_date">End Date</label>
-                    <input id="end_date"  name="end_date" type="date" value="{{$value['end']}}">
+                    <input id="end_date"  name="end_date" type="date" value="{">
                 </div>
 
                 <div class="form-group">
@@ -51,7 +53,7 @@
                     <select class="form-control" id="students" name="students" multiple>
                         <option value="0">None</option>
                         @foreach($data['students'] as $s)
-                            <option value="{{$s['id']}}"   @if(in_array($s, $value['students'])) selected @endif>
+                            <option value="{{$s['id']}}">
                                 {{$s['name']}}
                             </option>
                         @endforeach

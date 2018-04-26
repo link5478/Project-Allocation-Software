@@ -32,12 +32,18 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading" align="center">Archived Projects</div>
                     <div class="panel panel-default">
-                        @foreach ($data as $d)
+                        @if(count($data) > 0)
+                            @foreach ($data as $d)
+                                <div class="panel-body">
+                                    <a href="{{route('archive.project', $d->id)}}"> {{$d->name}} </a>
+                                    <a href="{{route('archive.projects.restore', $d->id)}}">Restore</a>
+                                </div>
+                            @endforeach
+                        @else
                             <div class="panel-body">
-                                <a href="{{route('archive.project', $d->id)}}"> {{$d->name}} </a>
-                                <a href="{{route('archive.projects.restore', $d->id)}}">Restore</a>
+                                No Archived Projects
                             </div>
-                        @endforeach
+                        @endif
                     </div>
                 </div>
             </div>

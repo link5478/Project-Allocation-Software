@@ -19,7 +19,6 @@ class CreateInterestsTable extends Migration
 
             $table->unsignedInteger('student_id');
             $table->unsignedInteger('project_id');
-            $table->unsignedInteger('session_id');
         });
     }
 

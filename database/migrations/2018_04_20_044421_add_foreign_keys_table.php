@@ -30,7 +30,6 @@ class AddForeignKeysTable extends Migration
         Schema::table('interests', function (Blueprint $table) {
             $table->foreign('student_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
-            $table->foreign('session_id')->references('id')->on('sessions')->onDelete('cascade');
         });
     }
 
