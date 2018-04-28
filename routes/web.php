@@ -82,6 +82,8 @@ $router->group([
     $router->post('sessions/create', 'CoordinatorController@CreateSession')->name('coordinator.sessions.create');
     $router->put('sessions/update/{session}', 'CoordinatorController@UpdateSession')->name('coordinator.sessions.update');
 
+    $router->get('allocation', 'CoordinatorController@PickSession')->name('coordinator.pick.session');
+    $router->get('allocation/session/{id}', 'CoordinatorController@AllocationView')->name('coordinator.show.allocation');
 });
 
 

@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Project;
 use Illuminate\Support\Facades\Auth;
-use App\Session;
+use App\courseSession;
 use Illuminate\Support\Facades\Redirect;
 
 class SupervisorController extends Controller
@@ -37,8 +37,8 @@ class SupervisorController extends Controller
         $toReturn['description'] = $project->description;
         $toReturn['availability'] = $project->availability;
         $toReturn['hidden'] = $project->hidden;
-        $toReturn['supervisor_name'] = $supervisor->name;
-        $session = Session::find($project->session_id);
+        $toReturn['supervisor_name'] = $supervisor->fname.$supervisor->lname;
+        $session = courseSession::find($project->session_id);
         $toReturn['session'] = $session->name;
 
         return view('supervisor.project')->with('data', $toReturn);
@@ -80,7 +80,7 @@ class SupervisorController extends Controller
 
         $project = new Project();
         $project->fill($request->all());
-        $project->session_id = $request->session_id;
+        $project->session_id = $request->input('session_id');
         $project->archived = 0;
         $project->created_at = Carbon::now()->toDateTimeString();
         $project->updated_at = Carbon::now()->toDateTimeString();

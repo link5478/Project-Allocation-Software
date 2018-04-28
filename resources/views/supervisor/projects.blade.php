@@ -33,7 +33,7 @@
                     <div class="panel-heading" align="center">My Projects</div>
                     <div class="panel panel-default">
 
-                        @if (App\Session::GetSession() != null)
+                        @if (App\courseSession::GetSession() != null)
                             <div class="panel-heading" align="center">Want to add a new project? <a href="{{route('supervisor.projects.add')}}">Add</a></div>
                         @else
                             <div class="panel-heading" align="center">There are no active session for new projects</div>

@@ -41,8 +41,8 @@
 
                         @auth
                             @if(Auth::user()->is_supervisor == 1)
-                                @if(App\Session::GetSession() != null)
-                                    <li><a href="">{{App\Session::GetSession()->name}}</a></li>
+                                @if(App\courseSession::GetSession() != null)
+                                    <li><a href="">{{App\courseSession::GetSession()->name}}</a></li>
                                 @endif
 
                                 <li><a href="{{ route('supervisor.projects') }}">My Projects</a></li>
@@ -67,7 +67,7 @@
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                    {{ Auth::user()->fname }} <span class="caret"></span>
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">

@@ -25,7 +25,7 @@ class User extends Authenticatable
 
     public static function ChoicePerSession($id)
     {
-        $session = Session::GetSession();
+        $session = courseSession::GetSession();
 
         if($session == null)
         {

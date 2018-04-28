@@ -13,7 +13,7 @@ class AddInvalidFieldToSessions extends Migration
      */
     public function up()
     {
-        Schema::table('sessions', function (Blueprint $table) {
+        Schema::table('course_sessions', function (Blueprint $table) {
             $table->tinyInteger('invalid')->default(0);
         });
     }

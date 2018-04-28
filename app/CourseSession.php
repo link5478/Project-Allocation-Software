@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 
-class Session extends Model
+class courseSession extends Model
 {
     protected $fillable = ['name', 'start', 'end', 'invalid'];
 
@@ -14,7 +14,7 @@ class Session extends Model
     public static function GetSession()
     {
         $now = Carbon::now()->toDateTimeString();
-        $session = Session::all()->where('start', '<', $now)->where('end', '>',
+        $session = courseSession::all()->where('start', '<', $now)->where('end', '>',
             $now)->last();
 
         if ($session == null)
@@ -25,6 +25,6 @@ class Session extends Model
 
     public static function ValidSessions()
     {
-        return Session::all()->where('invalid', '=', 0);
+        return courseSession::all()->where('invalid', '=', 0);
     }
 }

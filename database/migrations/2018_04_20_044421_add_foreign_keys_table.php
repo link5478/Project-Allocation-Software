@@ -15,7 +15,7 @@ class AddForeignKeysTable extends Migration
     {
         Schema::table('projects', function (Blueprint $table) {
             $table->foreign('supervisor_id')->references('id')->on('users')->onDelete('set null');
-            $table->foreign('session_id')->references('id')->on('sessions')->onDelete('set null');
+            $table->foreign('session_id')->references('id')->on('course_sessions')->onDelete('set null');
 
         });
 
@@ -24,7 +24,7 @@ class AddForeignKeysTable extends Migration
             $table->foreign('project1')->references('id')->on('projects')->onDelete('set null');
             $table->foreign('project2')->references('id')->on('projects')->onDelete('set null');
             $table->foreign('project3')->references('id')->on('projects')->onDelete('set null');
-            $table->foreign('session_id')->references('id')->on('sessions')->onDelete('cascade');
+            $table->foreign('session_id')->references('id')->on('course_sessions')->onDelete('cascade');
         });
 
         Schema::table('interests', function (Blueprint $table) {

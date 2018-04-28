@@ -35,10 +35,9 @@
         </div>
 
         <div class="alert alert-warning">
-            <strong>Warning!</strong> Work on one choice at a time. The page refreshes when you update a choice!
+            <strong>Warning!</strong> Please don't pick choices by the same supervisor. Mix it up!
         </div>
         @foreach($choices as $ch)
-
             <p> Session: {{$ch['session']->name}}</p>
             <div class="row">
                 <div class="col-md-4">

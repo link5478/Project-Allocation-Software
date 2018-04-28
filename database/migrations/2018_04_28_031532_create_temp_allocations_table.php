@@ -13,12 +13,12 @@ class CreateTempAllocationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tempallocations', function (Blueprint $table) {
+        Schema::create('temp_allocations', function (Blueprint $table) {
             $table->increments('id');
+            $table->timestamps();
             $table->unsignedInteger('student_id');
             $table->unsignedInteger('project_id')->nullable();
             $table->unsignedInteger('session_id');
-            $table->timestamps();
         });
     }
 
@@ -29,6 +29,6 @@ class CreateTempAllocationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tempallocations');
+        Schema::dropIfExists('temp_allocations');
     }
 }

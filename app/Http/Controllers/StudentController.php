@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\courseSession;
 use App\Interest;
 use Illuminate\Http\Request;
 use App\Project;
@@ -9,7 +10,6 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Choice;
-use App\Session;
 use Illuminate\Support\Facades\Redirect;
 
 class StudentController extends Controller
@@ -17,17 +17,17 @@ class StudentController extends Controller
     // Shows all relevant projects to the logged account.
     public function index()
     {
-        if(Session::GetSession() == null)
+        if(courseSession::GetSession() == null)
         {
             return view('error.session_invalid');
         }
 
-        $supervisors = User::all('id', 'name', 'is_supervisor')->where('is_supervisor','=', '1');
+        $supervisors = User::all('id', 'fname', 'lname', 'is_supervisor')->where('is_supervisor','=', '1');
         $data = [];
         foreach($supervisors as $s)
         {
             $projects  = $s::Projects(auth::id())->where('hidden', '=', 0);
-            $data[$s->name] = [];
+            $data[$s->fname.' '.$s->lname] = [];
             foreach($projects as $p)
             {
                 $interest = Interest::all()->where('student_id', '=', Auth::id())->where('project_id', '=', $p->id)->first();
@@ -41,7 +41,7 @@ class StudentController extends Controller
                     }
                 }
                 $project = ['project_id' => $p->id, 'name'=> $p->name, 'description' => $p->description, 'interested' => $is_interested];
-                array_push($data[$s->name], $project);
+                array_push($data[$s->fname.' '.$s->lname], $project);
             }
         }
         return view ('student.projects')->with('data', $data);
@@ -70,13 +70,13 @@ class StudentController extends Controller
 
     public function viewChoices()
     {
-        if(Session::GetSession() == null)
+        if(courseSession::GetSession() == null)
         {
             return view ('error.session_invalid');
         }
 
         // valid sessions only.
-        $sessions = Session::all()->where('invalid', '=', 0);
+        $sessions = courseSession::all()->where('invalid', '=', 0);
 
         // foreach valid session we want to see if the user has a choice associated with it. as in, did the coordinator add
         // them to the choices.
