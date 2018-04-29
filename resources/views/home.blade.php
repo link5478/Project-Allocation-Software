@@ -19,7 +19,7 @@
                             End Date: {{App\Session::GetSession()->end}}<br>
                         </p>
                         <br>
-
+                            You are a:
                         @auth
                             @if(Auth::user()->is_supervisor == 1)
                                 <br> <u>SUPERVISOR</u>
