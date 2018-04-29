@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Choice;
 use Illuminate\Support\Facades\Redirect;
+use App;
 
 class StudentController extends Controller
 {
@@ -70,6 +71,7 @@ class StudentController extends Controller
 
     public function viewChoices()
     {
+
         if(courseSession::GetSession() == null)
         {
             return view ('error.session_invalid');
@@ -99,6 +101,8 @@ class StudentController extends Controller
         $projects = Project::all('id', 'name', 'hidden')->where('hidden', '=', 0);
 
         return view('student.choices')->with('choices', $choices)->with('projects', $projects);
+
+
     }
 
     public function update(Request $request, Choice $choice)
@@ -131,5 +135,53 @@ class StudentController extends Controller
             $request->session()->put('interested', true);
         }
         return Redirect::back();
+    }
+
+
+    public function exportProjectsPDF(){
+
+        /*
+       * Plan for PDF
+       *
+       * Session Title
+       * [
+       * Project Title
+       * Project Supervisor name + email
+       * Project Description
+       * ]
+       * cycle
+       *
+       */
+
+        $session = courseSession::ValidSessions();
+        $data = [];
+        foreach($session as $s) {
+
+            $choice = Choice::all()->where('session_id', '=', $s->id)->where('student_id', '=', Auth::id())->first();
+
+            if($choice) {
+                $projectList = Project::where('session_id', '=', $s->id)->orderBy('name', 'asc')->get();
+                $data[$s->id]['session'] = $s->name;
+                $data[$s->id]['projects'] = [];
+                foreach ($projectList as $proj) {
+
+                    $project = [];
+                    $project['name'] = $proj->name;
+                    $project['description'] = $proj->description;
+
+                    $supervisor = User::find($proj->supervisor_id);
+                    $project['supervisor_name'] = $supervisor->fname . ' ' . $supervisor->lname;
+                    array_push($data[$s->id]['projects'], $project);
+                }
+            }
+        }
+    $info = $data[count($data)];
+
+        //dd($info);
+
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView('student.pdf',compact('info'));
+        return $pdf->stream();
+
     }
 }

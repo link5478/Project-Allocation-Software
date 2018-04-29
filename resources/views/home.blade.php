@@ -20,6 +20,7 @@
                                 End Date: {{Carbon\Carbon::parse(App\courseSession::GetSession()->end)->toDateString()}}<br>
                             @endif
                         <br>
+
                         You are a:
                         @auth
                             @if(Auth::user()->is_supervisor == 1)
@@ -50,3 +51,4 @@
         </div>
     </div>
 @endsection
+
