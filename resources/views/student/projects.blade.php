@@ -33,6 +33,10 @@
             @else
                 <h3>Want to show interested only? Click <a href="{{route('interest_toggle')}}">here</a></h3>
             @endif
+
+                <li><a href="{{ route('export.projects') }}">Export to PDF</a></li>
+
+
         </div>
 
 

@@ -72,6 +72,7 @@ $router->group([
     $router->get('projects/choices', 'StudentController@viewChoices')->name('student.choices');
     $router->put('projects/choices/{choice}', 'StudentController@update')->name('student.choices.update');
     $router->get('interest_toggle', 'StudentController@interested_toggle')->name('interest_toggle');
+    $router->get('export', 'StudentController@exportProjectsPDF')->name('export.projects');
 });
 
 $router->group([
