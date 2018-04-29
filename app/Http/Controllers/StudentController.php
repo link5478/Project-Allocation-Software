@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Choice;
 use Illuminate\Support\Facades\Redirect;
+use App;
 
 class StudentController extends Controller
 {
@@ -70,6 +71,7 @@ class StudentController extends Controller
 
     public function viewChoices()
     {
+
         if(courseSession::GetSession() == null)
         {
             return view ('error.session_invalid');
@@ -99,6 +101,8 @@ class StudentController extends Controller
         $projects = Project::all('id', 'name', 'hidden')->where('hidden', '=', 0);
 
         return view('student.choices')->with('choices', $choices)->with('projects', $projects);
+
+
     }
 
     public function update(Request $request, Choice $choice)
@@ -131,5 +135,46 @@ class StudentController extends Controller
             $request->session()->put('interested', true);
         }
         return Redirect::back();
+    }
+
+    public function getProjectList(){
+
+        $supervisors = User::all('id', 'fname', 'lname', 'is_supervisor')->where('is_supervisor','=', '1');
+        $data = [];
+        foreach($supervisors as $s)
+        {
+            $projects  = $s::Projects(auth::id())->where('hidden', '=', 0);
+            $data[$s->fname.' '.$s->lname] = [];
+            foreach($projects as $p)
+            {
+
+                $project = ['project_id' => $p->id, 'name'=> $p->name, 'description' => $p->description, 'interested' => $is_interested];
+                array_push($data[$s->fname.' '.$s->lname], $project);
+
+            }
+        }
+        return view ('student.projects')->with('data', $data);
+
+    }
+
+    public function exportProjectsPDF(){
+
+        /*
+       * Plan for PDF
+       *
+       * [
+       * Session Title
+       * Project Title
+       * Project Supervisor name + email
+       * Project Description
+       * ]
+       * cycle
+       *
+       */
+
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML('<h1>Test</h1>');
+        return $pdf->stream();
+
     }
 }
