@@ -137,25 +137,6 @@ class StudentController extends Controller
         return Redirect::back();
     }
 
-    public function getProjectList(){
-
-        $supervisors = User::all('id', 'fname', 'lname', 'is_supervisor')->where('is_supervisor','=', '1');
-        $data = [];
-        foreach($supervisors as $s)
-        {
-            $projects  = $s::Projects(auth::id())->where('hidden', '=', 0);
-            $data[$s->fname.' '.$s->lname] = [];
-            foreach($projects as $p)
-            {
-
-                $project = ['project_id' => $p->id, 'name'=> $p->name, 'description' => $p->description, 'interested' => $is_interested];
-                array_push($data[$s->fname.' '.$s->lname], $project);
-
-            }
-        }
-        return view ('student.projects')->with('data', $data);
-
-    }
 
     public function exportProjectsPDF(){
 
@@ -172,8 +153,44 @@ class StudentController extends Controller
        *
        */
 
+        //For Testing
+        /*
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadHTML('<h1>Test</h1>');
+        return $pdf->stream();
+*/
+        $session = courseSession::ValidSessions();
+        $data = [];
+        foreach($session as $s) {
+
+            $choice = Choice::all()->where('session_id', '=', $s->id)->where('student_id', '=', Auth::id())->first();
+
+            if($choice) {
+                $projectList = Project::all()->where('session_id', '=', $s->id);
+                $data[$s->id]['session'] = $s->name;
+                $data[$s->id]['projects'] = [];
+                foreach ($projectList as $proj) {
+
+                    $project = [];
+                    $project['name'] = $proj->name;
+                    $project['description'] = $proj->description;
+
+                    $supervisor = User::find($proj->supervisor_id);
+                    $project['supervisor_name'] = $supervisor->fname . ' ' . $supervisor->lname;
+                    array_push($data[$s->id]['projects'], $project);
+                }
+            }
+        }
+
+        dd($data);
+
+
+
+
+
+        //For Future use
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView('home');
         return $pdf->stream();
 
     }
