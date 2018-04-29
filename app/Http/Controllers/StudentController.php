@@ -143,8 +143,8 @@ class StudentController extends Controller
         /*
        * Plan for PDF
        *
-       * [
        * Session Title
+       * [
        * Project Title
        * Project Supervisor name + email
        * Project Description
@@ -153,12 +153,6 @@ class StudentController extends Controller
        *
        */
 
-        //For Testing
-        /*
-        $pdf = App::make('dompdf.wrapper');
-        $pdf->loadHTML('<h1>Test</h1>');
-        return $pdf->stream();
-*/
         $session = courseSession::ValidSessions();
         $data = [];
         foreach($session as $s) {
@@ -166,7 +160,7 @@ class StudentController extends Controller
             $choice = Choice::all()->where('session_id', '=', $s->id)->where('student_id', '=', Auth::id())->first();
 
             if($choice) {
-                $projectList = Project::all()->where('session_id', '=', $s->id);
+                $projectList = Project::where('session_id', '=', $s->id)->orderBy('name', 'asc')->get();
                 $data[$s->id]['session'] = $s->name;
                 $data[$s->id]['projects'] = [];
                 foreach ($projectList as $proj) {
@@ -181,16 +175,12 @@ class StudentController extends Controller
                 }
             }
         }
+    $info = $data[count($data)];
 
-        dd($data);
+        //dd($info);
 
-
-
-
-
-        //For Future use
         $pdf = App::make('dompdf.wrapper');
-        $pdf->loadView('home');
+        $pdf->loadView('student.pdf',compact('info'));
         return $pdf->stream();
 
     }
