@@ -143,12 +143,49 @@ class CoordinatorController extends Controller
         return view('coordinator.sessioncheck')->with('sessions', $sessions);
     }
 
+    public function UpdateAllocationView(Request $request, $session_id, $student_id)
+    {
+        $states = session('state');
+        $state = $states[count($states)-1];
+
+        $state[$student_id]['allocated'] = $request->input('project_id');
+        array_push($states, $state);
+        session(['state'=> $states]);
+
+        return $this->AllocationView($session_id);
+    }
+
+    public function ApplyChanges($session_id)
+    {
+        $states = session('state');
+        $state = $states[count($states)-1];
+
+        foreach($state as $key=>$value)
+        {
+           $temp = TempAllocation::all()->where('student_id', '=', $value['id'])->
+           where('session_id', '=', $session_id)->first();
+
+           if($temp == null)
+           {
+               $temp = new TempAllocation();
+               $temp->student_id = $value['id'];
+               $temp->session_id = $session_id;
+               $temp->created_at = Carbon::now()->toDateTimeString();
+           }
+
+            $temp->project_id  = $value['allocated'] == 'None' ? null : $value{'allocated'};
+            $temp->updated_at = $temp->created_at = Carbon::now()->toDateTimeString();
+
+            $temp->save();
+        }
+
+        return Redirect('home');
+    }
+
     public function AllocationView($session_id)
     {
-
         $session = courseSession::find($session_id);
-        if($session == null)
-        {
+        if ($session == null) {
             return view('error.session_invalid');
         }
 
@@ -159,8 +196,7 @@ class CoordinatorController extends Controller
         $data['students'] = [];
 
 
-        foreach($projectList as $proj)
-        {
+        foreach ($projectList as $proj) {
             $data['projects'][$proj->id] = [];
             $data['projects'][$proj->id]['name'] = $proj->name;
 
@@ -194,13 +230,11 @@ class CoordinatorController extends Controller
             $data['projects'][$proj->id]['thirdChoiceStudents'] = $thirdChoice;
         }
 
-        foreach($studentList as $stud)
-        {
+        foreach ($studentList as $stud) {
             $choice = Choice::all()->where('student_id', '=', $stud->id)->where('session_id', '=', $session_id)->first();
 
             // we only want to add them if they are part of the current session.
-            if($choice != null)
-            {
+            if ($choice != null) {
 
                 $allocation = TempAllocation::all()->where('session_id', '=', $session_id)->where('student_id', '=', $stud->id)->first();
 
@@ -217,6 +251,18 @@ class CoordinatorController extends Controller
             }
         }
 
-        return view('coordinator.allocation')->with('data', $data);
+        $state = session('state');
+        if ($state == null) {
+            $state = array();
+            array_push($state, $data['students']);
+            session(['state' => $state]);
+        }
+
+        if(count($state) > 0)
+        {
+            $state = $state[count($state)-1];
+        }
+
+        return view('coordinator.allocation')->with('data', $data)->with('state', $state)->with('session_id', $session_id);
     }
 }

@@ -33,7 +33,9 @@
                         </a>
                     </div>
 
-                    <p class="navbar-text">{{App\courseSession::GetSession()->name}}</p>
+                    @if(App\courseSession::GetSession())
+                        <p class="navbar-text">{{App\courseSession::GetSession()->name}}</p>
+                    @endif
 
                     <div class="collapse navbar-collapse" id="app-navbar-collapse">
                         <!-- Left Side Of Navbar -->
