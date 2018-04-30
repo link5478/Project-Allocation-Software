@@ -1,5 +1,12 @@
 @extends('layouts.app')
 
+<style>
+    p.wrap {
+        word-wrap: break-word;
+    }
+</style>
+
+
 @section('content')
     <div class="container">
 
@@ -34,7 +41,7 @@
                 <h3>Want to show interested only? Click <a href="{{route('interest_toggle')}}">here</a></h3>
             @endif
 
-                <li><a href="{{ route('export.projects') }}">Export to PDF</a></li>
+                <a href="{{ route('export.projects') }}">Export to PDF</a>
 
 
         </div>
@@ -44,37 +51,40 @@
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel-group" id="accordion">
                    @foreach($data as $key=>$value)
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#{{$key}}">{{$key}}</a>
-                                </h4>
-                            </div>
-                            <div id="{{$key}}" class="panel-collapse collapse in">
-                               @foreach($value as $val)
-                                   @if(Session::has('interested') and Session::get('interested') and $val['interested'] != 1)
-                                       @continue
-                                    @endif
-                                   <div class="card card-body"></div>
-                                    <h4 class="card-title">{{$val['name']}}
-                                        @if($val['interested'] == 1)
-                                            <a href="{{route('student.add_interest', $val['project_id'])}}">
-                                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                                            </a>
-                                        @else
-                                            <a href="{{route('student.add_interest', $val['project_id'])}}">
-                                                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                                            </a>
-                                        @endif
+                       Session : {{$value['name']}}
+                        @foreach($value['supervisor'] as $sup)
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#{{$sup['id'].$key}}">{{$sup['name']}}</a>
                                     </h4>
-                                    <p class="card-text">
-                                        {{$val['description']}}
-                                        <br>
-                                    </p>
+                                </div>
+                                <div id="{{$sup['id'].$key}}" class="panel-collapse collapse in">
+                                   @foreach($sup['projects'] as $val)
+                                       @if(Session::has('interested') and Session::get('interested') and $val['interested'] != 1)
+                                           @continue
+                                        @endif
+                                       <div class="card card-body"></div>
+                                        <h4 class="card-title">{{$val['name']}}
+                                            @if($val['interested'] == 1)
+                                                <a href="{{route('student.add_interest', $val['id'])}}">
+                                                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                                </a>
+                                            @else
+                                                <a href="{{route('student.add_interest', $val['id'])}}">
+                                                    <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+                                                </a>
+                                            @endif
+                                        </h4>
+                                        <p class="card-text wrap" >
+                                            {{$val['description']}}
+                                            <br>
+                                        </p>
 
-                               @endforeach
+                                   @endforeach
+                                </div>
                             </div>
-                        </div>
+                        @endforeach
                    @endforeach
                 </div>
             </div>

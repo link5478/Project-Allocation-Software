@@ -45,6 +45,7 @@
                                         <button type="submit" name="project_id" id="button-{{$student['id']}}-first"
                                                 value="{{$student['allocated']}}"
                                                 @if($student['allocated'] == $key) class="buttonAllocated btn btn-xs " @else class="btn btn-xs buttonNotAllocated" @endif
+                                                @if($student['allocated'] != "None" and $student['allocated'] != $key) disabled @endif
                                                 onclick="allocate('first','{{$student['id']}}', '{{$key}}');"
                                                 data-html="true"
                                                 data-toggle="tooltip"
@@ -70,6 +71,7 @@
                                         <button type="submit" name="project_id" id="button-{{$student['id']}}-second"
                                                 value="{{$student['allocated']}}"
                                                 @if($student['allocated'] == $key) class="buttonAllocated btn btn-xs " @else class="btn btn-xs buttonNotAllocated" @endif
+                                                @if($student['allocated'] != "None" and $student['allocated'] != $key) disabled @endif
                                                 onclick="allocate('second','{{$student['id']}}', '{{$key}}');"
                                                 data-html="true"
                                                 data-toggle="tooltip"
@@ -95,6 +97,7 @@
                                         <button type="submit" name="project_id" id="button-{{$student['id']}}-third"
                                                 value="{{$student['allocated']}}"
                                                 @if($student['allocated'] == $key) class="buttonAllocated btn btn-xs " @else class="btn btn-xs buttonNotAllocated" @endif
+                                                @if($student['allocated'] != "None" and $student['allocated'] != $key) disabled @endif
                                                 onclick="allocate('third','{{$student['id']}}', '{{$key}}');"
                                                 data-html="true"
                                                 data-toggle="tooltip"

@@ -13,11 +13,6 @@ class User extends Authenticatable
 
     protected $hidden = [ 'remember_token'];
 
-    public static function Projects($id)
-    {
-        return Project::all()->where('supervisor_id', '=', $id)->where('archived', '=', 0);
-    }
-
     public static function ArchivedProjects($id)
     {
         return Project::all()->where('supervisor_id', '=', id)->where('archived', '=', 1);

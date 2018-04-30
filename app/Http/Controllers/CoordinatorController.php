@@ -29,6 +29,8 @@ class CoordinatorController extends Controller
             $data['sessions'][$s->id]['start'] = Carbon::parse($s->start)->format('Y-m-d');
             $data['sessions'][$s->id]['end'] = Carbon::parse($s->end)->format('Y-m-d');
             $data['sessions'][$s->id]['students'] = [];
+            $data['sessions'][$s->id]['invalid'] = $s->invalid;
+
 
             $choicesPerSession = Choice::all()->where('session_id', '=', $s->id);
             foreach($choicesPerSession as $choice)
@@ -246,7 +248,7 @@ class CoordinatorController extends Controller
                 $data['students'][$stud->id]['first'] = $projectList->find($choice->project1) == null ? 'None' : $projectList->find($choice->project1)->name;
                 $data['students'][$stud->id]['second'] = $projectList->find($choice->project2) == null ? 'None' : $projectList->find($choice->project2)->name;
                 $data['students'][$stud->id]['third'] = $projectList->find($choice->project3) == null ? 'None' : $projectList->find($choice->project3)->name;
-                $data['students'][$stud->id]['allocated'] = $allocation == null ? 'None' : $allocation->project_id;
+                $data['students'][$stud->id]['allocated'] = $allocation ? 'None' : $allocation->project_id;
                 $data['students'][$stud->id]['additional_info'] = $choice->additional_info;
             }
         }
@@ -265,4 +267,18 @@ class CoordinatorController extends Controller
 
         return view('coordinator.allocation')->with('data', $data)->with('state', $state)->with('session_id', $session_id);
     }
+
+
+    public function invalidateSession($session_id){
+
+        $session = courseSession::find($session_id);
+
+        $session->invalid = !$session->invalid;
+
+        $session->save();
+
+        return Redirect::back()->with('message', 'Operation Successful!');
+
+    }
+
 }

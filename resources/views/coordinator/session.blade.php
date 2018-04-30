@@ -33,6 +33,12 @@
                     </div>
                     <button type="submit" class="btn btn-primary">Update</button>
                 </form>
+
+                <form action="{{ route('coordinator.sessions.validate', $key)}}" method="POST" enctype="multipart/form-data" class="form-horizontal">
+                    {{ csrf_field() }}
+                    <button type="submit" class="btn btn-primary" name = "invalid" value = "{{$data['sessions'][$key]['invalid']}}">@if ($data['sessions'][$key]['invalid'] == 0) Invalidate @else Validate @endif </button>
+
+                </form>
             </div>
         </div>
         @endforeach

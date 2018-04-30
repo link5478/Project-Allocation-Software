@@ -82,6 +82,7 @@ $router->group([
     $router->get('sessions', 'CoordinatorController@ShowSessions')->name('coordinator.sessions');
     $router->post('sessions/create', 'CoordinatorController@CreateSession')->name('coordinator.sessions.create');
     $router->put('sessions/update/{session}', 'CoordinatorController@UpdateSession')->name('coordinator.sessions.update');
+    $router->post('sessions/validate/{session_id}' , 'CoordinatorController@invalidateSession')->name('coordinator.sessions.validate');
 
     $router->get('allocation', 'CoordinatorController@PickSession')->name('coordinator.pick.session');
     $router->get('allocation/session/{id}', 'CoordinatorController@AllocationView')->name('coordinator.show.allocation');

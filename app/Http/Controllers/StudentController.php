@@ -18,31 +18,44 @@ class StudentController extends Controller
     // Shows all relevant projects to the logged account.
     public function index()
     {
-        if(courseSession::GetSession() == null)
-        {
-            return view('error.session_invalid');
-        }
-
-        $supervisors = User::all('id', 'fname', 'lname', 'is_supervisor')->where('is_supervisor','=', '1');
         $data = [];
-        foreach($supervisors as $s)
+
+        $sessions = courseSession::ValidSessions();
+
+        foreach ($sessions as $session)
         {
-            $projects  = $s::Projects(auth::id())->where('hidden', '=', 0);
-            $data[$s->fname.' '.$s->lname] = [];
-            foreach($projects as $p)
+            $choice = Choice::all()->where('session_id', '=', $session->id)->where('student_id', '=', auth::id())->first();
+
+            if($choice != null)
             {
-                $interest = Interest::all()->where('student_id', '=', Auth::id())->where('project_id', '=', $p->id)->first();
-                $is_interested = false;
-                // if we have an interest entry, we want to look at it.
-                if($interest != null)
-                {
-                    if($interest->project_id == $p->id)
-                    {
-                        $is_interested = true;
+                $data[$session->id] = [];
+                $data[$session->id]['name'] = $session->name;
+
+                $supervisors = User::where('is_supervisor', '=', 1)->orderBy('lname', 'asc')->get();
+                $data[$session->id]['supervisor'] = [];
+
+                foreach($supervisors as $sup) {
+
+                    $super = [];
+                    $super['id'] = $sup->id;
+                    $super['name'] = $sup->fname.' '.$sup->lname;
+                    $super['projects'] = [];
+
+                    $projects = Project::where('supervisor_id', '=', $sup->id)->where('session_id', '=', $session->id)->orderBy('name', 'asc')->get();
+                    foreach ($projects as $proj) {
+
+                        $project = [];
+                        $project['id'] = $proj->id;
+                        $project['name'] = $proj->name;
+                        $project['description'] = $proj->description;
+                        $interested = Interest::all()->where('student_id', '=', auth::id())->where('project_id', '=', $proj->id)->first();
+                        $project['interested'] = $interested == null ? '0' : '1';
+
+                        array_push($super['projects'], $project);
                     }
+
+                    array_push($data[$session->id]['supervisor'], $super);
                 }
-                $project = ['project_id' => $p->id, 'name'=> $p->name, 'description' => $p->description, 'interested' => $is_interested];
-                array_push($data[$s->fname.' '.$s->lname], $project);
             }
         }
         return view ('student.projects')->with('data', $data);
@@ -88,17 +101,23 @@ class StudentController extends Controller
         {
             // should only be 1 choice per user per session.
             $choice = Choice::all()->where('session_id', '=', $session->id)->where('student_id', '=', auth::id())->first();
-
             if($choice != null)
             {
-                $data = [];
-                $data['choice'] = $choice;
-                $data['session'] = $session;
+                $choices[$session->id] = [];
+                $choices[$session->id]['choice'] = $choice;
+                $choices[$session->id]['name'] = $session->name;
+                $choices[$session->id]['projects'] = [];
 
-                array_push($choices, $data);
+                $projects = Project::all('id', 'name', 'hidden', 'session_id')->where('hidden', '=', 0)->where('session_id', '=', $session->id);
+                foreach($projects as $proj)
+                {
+                    $project = [];
+                    $project['name'] = $proj->name;
+                    $project['id'] = $proj->id;
+                    array_push($choices[$session->id]['projects'], $project);
+                }
             }
         }
-        $projects = Project::all('id', 'name', 'hidden')->where('hidden', '=', 0);
 
         return view('student.choices')->with('choices', $choices)->with('projects', $projects);
 

@@ -38,7 +38,7 @@
             <strong>Warning!</strong> Please don't pick choices by the same supervisor. Mix it up!
         </div>
         @foreach($choices as $ch)
-            <p> Session: {{$ch['session']->name}}</p>
+            <p> Session: {{$ch['name']}}</p>
             <div class="row">
                 <div class="col-md-4">
                     <form action="{{ route('student.choices.update', $ch['choice']) }}" method="POST" enctype="multipart/form-data">
@@ -49,9 +49,9 @@
                             <label for="choice1">Choice 1</label>
                             <select class="form-control" id="choice1" name="choice1">
                                 <option value="0">None</option>
-                                @foreach($projects as $proj)
-                                    <option value="{{$proj->id}}" @if($proj->id == $ch['choice']->project1) selected @endif>
-                                        {{$proj->name}}
+                                @foreach($ch['projects'] as $proj)
+                                    <option value="{{$proj['id']}}" @if($proj['id'] == $ch['choice']->project1) selected @endif>
+                                        {{$proj['name']}}
                                     </option>
                                 @endforeach
                             </select>
@@ -59,9 +59,9 @@
                             <label for="choice2">Choice 2</label>
                             <select class="form-control" id="choice2" name="choice2">
                                 <option value="0">None</option>
-                                @foreach($projects as $proj)
-                                    <option value="{{$proj->id}}" @if($proj->id == $ch['choice']->project2) selected @endif>
-                                        {{$proj->name}}
+                                @foreach($ch['projects'] as $proj)
+                                    <option value="{{$proj['id']}}" @if($proj['id'] == $ch['choice']->project2) selected @endif>
+                                        {{$proj['name']}}
                                     </option>
                                 @endforeach
                             </select>
@@ -69,9 +69,9 @@
                             <label for="choice3">Choice 3</label>
                             <select class="form-control" id="choice3" name="choice3">
                                 <option value="0">None</option>
-                                @foreach($projects as $proj)
-                                    <option value="{{$proj->id}}" @if($proj->id == $ch['choice']->project3) selected @endif>
-                                        {{$proj->name}}
+                                @foreach($ch['projects'] as $proj)
+                                    <option value="{{$proj['id']}}" @if($proj['id'] == $ch['choice']->project3) selected @endif>
+                                        {{$proj['name']}}
                                     </option>
                                 @endforeach
                             </select>
