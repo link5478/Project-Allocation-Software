@@ -27,7 +27,7 @@ class ArchiveController extends Controller
             return null;
         }
 
-        $supervisor = $project::Supervisor();
+        $supervisor = $project::Supervisor($project->supervisor_id);
 
         if($supervisor == null)
         {
@@ -37,10 +37,8 @@ class ArchiveController extends Controller
         $toReturn = [];
         $toReturn['name'] = $project->name;
         $toReturn['description'] = $project->description;
-        $toReturn['availability'] = $project->availability;
-        $toReturn['supervisor_name'] = $supervisor->name;
 
-        return $toReturn;
+        return view('archive.archive')->with('data', $toReturn);
     }
 
     public function restore($id)

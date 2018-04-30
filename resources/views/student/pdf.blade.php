@@ -26,12 +26,12 @@
 
     @foreach ($projects as $proj)
 
-        <h3>
+        <h3 class = "wrap">
             <u>{{$proj['name']}}</u>
         </h3>
         <h4>
             Supervisor: {{$proj['supervisor_name']}} <br>
-            Email Address:
+            Email Address: {{$proj['email']}}
         </h4>
         <p class = "wrap">
             {{$proj['description']}}

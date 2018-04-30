@@ -37,7 +37,7 @@ class SupervisorController extends Controller
         $toReturn['description'] = $project->description;
         $toReturn['availability'] = $project->availability;
         $toReturn['hidden'] = $project->hidden;
-        $toReturn['supervisor_name'] = $supervisor->fname.$supervisor->lname;
+        $toReturn['supervisor_name'] = $supervisor->fname.' '.$supervisor->lname;
         $session = courseSession::find($project->session_id);
         $toReturn['session'] = $session->name;
 
@@ -111,7 +111,6 @@ class SupervisorController extends Controller
         $clone = new Project();
         $clone->name = 'COPY - ' .$project->name;
         $clone->description = $project->description;
-        $clone->availability = $project->availability;
         $clone->hidden = '1';
         $clone->supervisor_id= $project->supervisor_id;
         $clone->session_id = $project->session_id;

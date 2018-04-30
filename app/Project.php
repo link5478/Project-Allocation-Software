@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    protected $fillable = ['name', 'description', 'availability', 'hidden', 'supervisor_id', 'archived', 'session_id'];
+    protected $fillable = ['name', 'description', 'hidden', 'supervisor_id', 'archived', 'session_id'];
 
     public static function Supervisor($id)
     {

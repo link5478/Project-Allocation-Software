@@ -19,6 +19,7 @@ class CreateCourseSessionsTable extends Migration
             $table->string('name');
             $table->dateTime('start');
             $table->dateTime('end');
+            $table->tinyInteger('finalised')->default(0);
         });
     }
 

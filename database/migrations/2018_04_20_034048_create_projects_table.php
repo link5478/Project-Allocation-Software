@@ -18,7 +18,6 @@ class CreateProjectsTable extends Migration
             $table->timestamps();
             $table->string('name');
             $table->string('description');
-            $table->string('availability');
             $table->tinyInteger('hidden');
             $table->unsignedInteger('supervisor_id')->nullable();
             $table->unsignedInteger('session_id')->nullable();

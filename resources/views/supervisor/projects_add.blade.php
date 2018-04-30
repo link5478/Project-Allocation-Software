@@ -63,15 +63,6 @@
                                value="" required>
                     </div>
 
-                    <div class="form-group{{ $errors->has('availability') ? ' has-error' : '' }}">
-                        <label for="availability">Availability</label>
-                        <input type="text" class="form-control" id="availability" name="availability"
-                               placeholder="10"
-                               value="">
-                    </div>
-
-
-
                     <div class="form-group{{ $errors->has('supervisor_id') ? ' has-error' : '' }}">
                         <label for="supervisor_id">Supervisor ID</label>
                         <input type="text" class="form-control" id="supervisor_id" name="supervisor_id"

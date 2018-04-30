@@ -55,17 +55,10 @@
                     </div>
 
                     <div class="form-group{{ $errors->has('hidden') ? ' has-error' : '' }}">
-                        <label for="hidden">Hidden</label>
+                        <label for="hidden">Hidden (0 = visible, 1 = hidden)</label>
                         <input type="text" class="form-control" id="hidden" name="hidden"
                                placeholder="0"
                                value="{{$project->hidden}}" required>
-                    </div>
-
-                    <div class="form-group{{ $errors->has('availability') ? ' has-error' : '' }}">
-                        <label for="availability">Availability</label>
-                        <input type="text" class="form-control" id="availability" name="availability"
-                               placeholder="{{$project->availability}}"
-                               value="{{ $project->availability }}">
                     </div>
 
                     <div class="form-group">

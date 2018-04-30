@@ -10,6 +10,8 @@ use App\User;
 use App\Choice;
 use App\Project;
 use Illuminate\Support\Facades\Redirect;
+use App;
+
 
 class CoordinatorController extends Controller
 {
@@ -133,6 +135,16 @@ class CoordinatorController extends Controller
                 $choice->updated_at = Carbon::now()->toDateTimeString();
 
                 $choice->save();
+
+
+                $allocation = new TempAllocation();
+                $allocation->project_id = null;
+                $allocation->student_id = $s;
+                $allocation->session_id = $session->id;
+                $allocation->invalid = 0;
+                $allocation->created_at = Carbon::now()->toDateTimeString();
+                $allocation->updated_at = Carbon::now()->toDateTimeString();
+                $allocation->save();
             }
         }
 
@@ -173,6 +185,7 @@ class CoordinatorController extends Controller
                $temp->student_id = $value['id'];
                $temp->session_id = $session_id;
                $temp->created_at = Carbon::now()->toDateTimeString();
+               $temp->finalised = 0;
            }
 
             $temp->project_id  = $value['allocated'] == 'None' ? null : $value{'allocated'};
@@ -181,7 +194,7 @@ class CoordinatorController extends Controller
             $temp->save();
         }
 
-        return Redirect('home');
+        return Redirect('allocation')->with('message', 'Operation Successful');
     }
 
     public function AllocationView($session_id)
@@ -191,7 +204,7 @@ class CoordinatorController extends Controller
             return view('error.session_invalid');
         }
 
-        $projectList = Project::all()->where('session_id', '=', $session_id);
+        $projectList = Project::all()->where('session_id', '=', $session_id)->where('hidden', '=', 0);
         $studentList = User::all()->where('is_student', '=', 1);
         $data = [];
         $data['projects'] = [];
@@ -248,7 +261,7 @@ class CoordinatorController extends Controller
                 $data['students'][$stud->id]['first'] = $projectList->find($choice->project1) == null ? 'None' : $projectList->find($choice->project1)->name;
                 $data['students'][$stud->id]['second'] = $projectList->find($choice->project2) == null ? 'None' : $projectList->find($choice->project2)->name;
                 $data['students'][$stud->id]['third'] = $projectList->find($choice->project3) == null ? 'None' : $projectList->find($choice->project3)->name;
-                $data['students'][$stud->id]['allocated'] = $allocation ? 'None' : $allocation->project_id;
+                $data['students'][$stud->id]['allocated'] = $allocation->project_id == null ? 'None' : $allocation->project_id;
                 $data['students'][$stud->id]['additional_info'] = $choice->additional_info;
             }
         }
@@ -268,6 +281,25 @@ class CoordinatorController extends Controller
         return view('coordinator.allocation')->with('data', $data)->with('state', $state)->with('session_id', $session_id);
     }
 
+    public function finaliseAllocation($session_id)
+    {
+        $allocations = TempAllocation::all()->where('session_id', '=', $session_id);#
+        foreach($allocations as $alloc)
+        {
+            $alloc->finalised = 1;
+            $alloc->updated_at = Carbon::now()->toDateTimeString();
+            $alloc->save();
+        }
+        return Redirect::back()->with('message', 'Operation Sucessful');
+    }
+
+    public function ShowSessionsForAllocation()
+    {
+        $sessions = courseSession::orderBy('id', 'desc')->get();
+
+        return view('coordinator.sessioncheck')->with('data', $sessions);
+    }
+
 
     public function invalidateSession($session_id){
 
@@ -278,6 +310,51 @@ class CoordinatorController extends Controller
         $session->save();
 
         return Redirect::back()->with('message', 'Operation Successful!');
+
+    }
+
+    public function exportToPDF($session_id){
+
+        /*
+        * Plan for PDF
+        *
+        * Session Title
+        * [
+        * Project Title + Student name
+        * ]
+        * cycle
+        *
+        */
+
+        $info = [];
+        $info['students'] = [];
+
+        $info['session_name'] = courseSession::find($session_id)->name;
+
+        $students = User::where('is_student', '=', 1)->orderBy('lname', 'asc')->get();
+
+        foreach($students as $student)
+        {
+            // see if student has an allocation
+            $alloc = TempAllocation::all()->where('session_id', '=', $session_id)->where('student_id', '=', $student->id)
+                ->where('project_id', '!=', null)->where('finalised', '=', 1) ->first();
+
+            if($alloc != null)
+            {
+                $stud= [];
+                $stud['name'] = $student->lname.', '.$student->fname;
+                $project = Project::find($alloc->project_id);
+                $stud['project_name'] = $project->name;
+                array_push($info['students'], $stud);
+            }
+        }
+
+        //dd($data);
+
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView('coordinator.allocationPDF',compact('info'));
+        return $pdf->stream();
+
 
     }
 

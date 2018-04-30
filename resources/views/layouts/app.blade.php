@@ -53,7 +53,7 @@
                                 @endif
                                 @if(Auth::user()->is_coordinator == 1)
                                     <li><a href="{{ route('coordinator.sessions') }}">Session</a></li>
-                                    <li><a href="#">Allocation</a></li>
+                                    <li><a href="{{route('coordinator.allocation')}}">Allocation</a></li>
                                 @endif
                             @endauth
                         </ul>

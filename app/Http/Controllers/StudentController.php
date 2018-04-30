@@ -85,7 +85,7 @@ class StudentController extends Controller
     public function viewChoices()
     {
 
-        if(courseSession::GetSession() == null)
+        if(courseSession::ValidSessions()->count() < 1)
         {
             return view ('error.session_invalid');
         }
@@ -190,6 +190,7 @@ class StudentController extends Controller
 
                     $supervisor = User::find($proj->supervisor_id);
                     $project['supervisor_name'] = $supervisor->fname . ' ' . $supervisor->lname;
+                    $project['email'] = $supervisor->email;
                     array_push($data[$s->id]['projects'], $project);
                 }
             }

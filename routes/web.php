@@ -72,7 +72,7 @@ $router->group([
     $router->get('projects/choices', 'StudentController@viewChoices')->name('student.choices');
     $router->put('projects/choices/{choice}', 'StudentController@update')->name('student.choices.update');
     $router->get('interest_toggle', 'StudentController@interested_toggle')->name('interest_toggle');
-    $router->get('export', 'StudentController@exportProjectsPDF')->name('export.projects');
+    $router->get('project/export', 'StudentController@exportProjectsPDF')->name('export.projects');
 });
 
 $router->group([
@@ -88,6 +88,11 @@ $router->group([
     $router->get('allocation/session/{id}', 'CoordinatorController@AllocationView')->name('coordinator.show.allocation');
     $router->post('allocation/apply/{session_id}', 'CoordinatorController@ApplyChanges')->name('coordinator.allocation.apply');
     $router->post('allocation/update/{session_id}/{student_id}', 'CoordinatorController@UpdateAllocationView')->name('coordinator.allocation.update.view');
+
+
+    $router->get('allocation', 'CoordinatorController@ShowSessionsForAllocation')->name('coordinator.allocation');
+    $router->get('allocation/session/{session_id}/finalise', 'CoordinatorController@finaliseAllocation')->name('coordinator.allocation.finalise');
+    $router->get('allocation/export/{session_id}', 'CoordinatorController@exportToPDF')->name('coordinator.export');
 });
 
 
