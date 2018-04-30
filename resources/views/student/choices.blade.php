@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Pick your choices!')
+@section('title', 'Project Choices')
 
 @section('content')
 
@@ -89,6 +89,11 @@
                 </div>
             </div>
         @endforeach
+
+        <div class="alert alert-warning">
+            If you're having issues please contact the Project Coordinator: Keith Edwards at "kjedwards@dundee.ac.uk" <br>
+            If you're trying to submit your project choices late, please contact the Project Coordinator
+        </div>
     </div>
 
 @endsection

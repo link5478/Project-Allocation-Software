@@ -35,7 +35,7 @@
                         @if(count($data) > 0)
                             @foreach ($data as $d)
                                 <div class="panel-body">
-                                    <a href="{{route('archive.project', $d->id)}}"> {{$d->name}} </a>
+                                    <a style= "font-size:150%;"href="{{route('archive.project', $d->id)}}"> {{$d->name}}: </a> <br>
                                     <a href="{{route('archive.projects.restore', $d->id)}}">Restore</a>
                                 </div>
                             @endforeach

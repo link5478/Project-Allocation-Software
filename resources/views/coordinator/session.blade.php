@@ -1,7 +1,17 @@
 @extends('layouts.app')
 
+@section('title', 'Create Session')
+
+
 @section('content')
     <div class="container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <h1>@yield('title')</h1>
+            </div>
+        </div>
+
         @foreach ($data['sessions'] as $key=>$value)
 
 

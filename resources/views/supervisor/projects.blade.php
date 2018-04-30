@@ -41,7 +41,7 @@
 
                         @foreach ($data as $d)
                             <div class="panel-body">
-                                <a href="{{route('project', $d->id)}}"> {{$d->name}} </a>
+                                <a style= "font-size:150%;" href="{{route('project', $d->id)}}"> {{$d->name}}  : </a> <br>
                                 <a href="{{route('supervisor.projects.edit', $d->id)}}">Edit</a>
                                 <a href="{{route('supervisor.projects.archive', $d->id)}}">Archive</a>
                                 <a href="{{route('supervisor.projects.clone', $d->id)}}">Clone</a>

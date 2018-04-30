@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title', 'Project List')
+
+
 <style>
     p.wrap {
         word-wrap: break-word;
@@ -9,6 +12,12 @@
 
 @section('content')
     <div class="container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <h1>@yield('title')</h1>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-md-12">
