@@ -16,8 +16,20 @@
                         <p>
                             @if(\App\courseSession::GetSession())
                                 Current Session: {{App\courseSession::GetSession()->name}}<br>
-                                Start Date: {{Carbon\Carbon::parse(App\courseSession::GetSession()->start)->toDateString()}}<br>
-                                End Date: {{Carbon\Carbon::parse(App\courseSession::GetSession()->end)->toDateString()}}<br>
+
+                                Start Date:
+                                    @php
+                                        $row['start_date'] = Carbon\Carbon::parse(App\courseSession::GetSession()->start)->toDateString();
+                                        $nice_date = date('d-m-Y', strtotime( $row['start_date'] ));
+                                    echo $nice_date;
+                                    @endphp <br>
+
+                                End Date:
+                                    @php
+                                        $row['end_date'] = Carbon\Carbon::parse(App\courseSession::GetSession()->end)->toDateString();
+                                        $nice_date = date('d-m-Y', strtotime( $row['end_date'] ));
+                                    echo $nice_date;
+                                    @endphp <br>
                             @endif
                         <br>
 
