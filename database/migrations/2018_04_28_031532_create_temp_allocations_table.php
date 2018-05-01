@@ -19,6 +19,7 @@ class CreateTempAllocationsTable extends Migration
             $table->unsignedInteger('student_id');
             $table->unsignedInteger('project_id')->nullable();
             $table->unsignedInteger('session_id');
+            $table->tinyInteger('finalised')->default(0);
         });
     }
 

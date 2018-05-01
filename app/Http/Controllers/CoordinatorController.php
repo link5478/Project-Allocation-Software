@@ -11,6 +11,7 @@ use App\Choice;
 use App\Project;
 use Illuminate\Support\Facades\Redirect;
 use App;
+use test\Mockery\AllowsExpectsSyntaxTest;
 
 
 class CoordinatorController extends Controller
@@ -73,6 +74,7 @@ class CoordinatorController extends Controller
         {
             if($student != "0") {
                 $choice = Choice::all()->where('session_id', '=', $session->id)->where('student_id', '=', $student)->first();
+                $allocation = TempAllocation::all()->where('session_id', '=', $session->id)->where('student_id', '=', $student)->first();
                 if ($choice == null)
                 {
                     $choice = new Choice();
@@ -85,11 +87,29 @@ class CoordinatorController extends Controller
                     $choice->created_at = Carbon::now()->toDateTimeString();
                     $choice->updated_at = Carbon::now()->toDateTimeString();
                     $choice->save();
+
                 }
                 else
                 {
                     $choice->updated_at = Carbon::now()->toDateTimeString();
                     $choice->save();
+                }
+
+                if($allocation == null)
+                {
+                    $allocation = new TempAllocation();
+                    $allocation->project_id = null;
+                    $allocation->student_id = $student;
+                    $allocation->session_id = $session->id;
+                    $allocation->created_at = Carbon::now()->toDateTimeString();
+                    $allocation->updated_at = Carbon::now()->toDateTimeString();
+                    $allocation->finalised = 0;
+                    $allocation->save();
+                }
+                else
+                {
+                    $allocation->updated_at = Carbon::now()->toDateTimeString();
+                    $allocation->save();
                 }
             }
         }
@@ -102,6 +122,15 @@ class CoordinatorController extends Controller
             if(!in_array($choice->student_id, $students))
             {
                 $choice->delete();
+            }
+        }
+
+        $allocations = TempAllocation::all()->where('session_id', '=', $session->id);
+        foreach($allocations as $alloc)
+        {
+            if(!in_array($alloc->student_id, $students))
+            {
+                $alloc->delete();
             }
         }
 
@@ -141,9 +170,9 @@ class CoordinatorController extends Controller
                 $allocation->project_id = null;
                 $allocation->student_id = $s;
                 $allocation->session_id = $session->id;
-                $allocation->invalid = 0;
                 $allocation->created_at = Carbon::now()->toDateTimeString();
                 $allocation->updated_at = Carbon::now()->toDateTimeString();
+                $allocation->finalised = 0;
                 $allocation->save();
             }
         }
@@ -261,7 +290,11 @@ class CoordinatorController extends Controller
                 $data['students'][$stud->id]['first'] = $projectList->find($choice->project1) == null ? 'None' : $projectList->find($choice->project1)->name;
                 $data['students'][$stud->id]['second'] = $projectList->find($choice->project2) == null ? 'None' : $projectList->find($choice->project2)->name;
                 $data['students'][$stud->id]['third'] = $projectList->find($choice->project3) == null ? 'None' : $projectList->find($choice->project3)->name;
-                $data['students'][$stud->id]['allocated'] = $allocation->project_id == null ? 'None' : $allocation->project_id;
+                if($allocation == null)
+                    $data['students'][$stud->id]['allocated'] = $allocation->project_id == null ? 'None' : $allocation->project_id;
+                else
+                    $data['students'][$stud->id]['allocated'] = 'None';
+
                 $data['students'][$stud->id]['additional_info'] = $choice->additional_info;
             }
         }
