@@ -6,41 +6,45 @@ class UserTableSeeder extends Seeder
 {
     public function run()
     {
-//        \App\Project::truncate();
-//        $faker = \Faker\Factory::create();
-//
-//
-//        /*
-//         * Creating Full Admin.
-//         */
-//
-//        User::create([
-//            'name' => 'Admin',
-//            'email' => 'admin@admin.admin',
-//            'password' => bcrypt('admin'),
-//            'is_student' => true,
-//            'is_supervisor' => true,
-//            'is_coordinator' => true,
-//        ]);
-//
-//
-//        for($i = 0; $i < 50; $i++) {
-//            $name = $faker->name;
-//            $email = $faker->freeEmail;
-//            $password = bcrypt('secret');
-//            $is_student = $faker->boolean(60);
-//            $is_supervisor = !$is_student;
-//            $is_coordinator = $is_supervisor * $faker->boolean(20);
-//
-//            User::create([
-//                'name' => $name,
-//                'email' => $email,
-//                'password' => $password,
-//                'is_student' => $is_student,
-//                'is_supervisor' => $is_supervisor,
-//                'is_coordinator' => $is_coordinator,
-//            ]);
-//        }
+
+
+        /*
+         * Creating Full Admin.
+         */
+
+        DB::table('users')->insert([
+            'fname' => 'Super',
+            'lname' => 'User',
+            'email' => 'superuser@gmail.com',
+            'password' => bcrypt('superuser'),
+            'is_student' => true,
+            'is_supervisor' => true,
+            'is_coordinator' => true,
+        ]);
+
+        /*
+         * Creating Supervisor.
+         */
+
+        DB::table('users')->insert([
+            'fname' => 'Super',
+            'lname' => 'Visor',
+            'email' => 'supervisor@gmail.com',
+            'password' => bcrypt('supervisor'),
+            'is_supervisor' => true,
+        ]);
+
+        /*
+         * Creating Student.
+         */
+
+        DB::table('users')->insert([
+            'fname' => 'Stu',
+            'lname' => 'Dent',
+            'email' => 'student@gmail.com',
+            'password' => bcrypt('student'),
+            'is_student' => true,
+        ]);
 
 
     }
