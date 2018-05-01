@@ -323,7 +323,7 @@ class CoordinatorController extends Controller
             $alloc->updated_at = Carbon::now()->toDateTimeString();
             $alloc->save();
         }
-        return Redirect::back()->with('message', 'Operation Sucessful');
+        return Redirect::back()->with('message', 'Operation Successful');
     }
 
     public function ShowSessionsForAllocation()

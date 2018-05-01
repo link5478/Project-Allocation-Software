@@ -18,6 +18,11 @@ class StudentController extends Controller
     // Shows all relevant projects to the logged account.
     public function index()
     {
+        if(courseSession::ValidSessions()->count() == 0){
+            return view('error.session_invalid');
+
+        }
+
         $data = [];
 
         $sessions = courseSession::ValidSessions();
@@ -97,6 +102,9 @@ class StudentController extends Controller
         // them to the choices.
 
         $choices = [];
+
+        $projects = [];
+
         foreach($sessions as $session)
         {
             // should only be 1 choice per user per session.
@@ -119,6 +127,11 @@ class StudentController extends Controller
             }
         }
 
+        if($projects == []){
+
+            return view('error.session_invalid');
+
+        }
         return view('student.choices')->with('choices', $choices)->with('projects', $projects);
 
 

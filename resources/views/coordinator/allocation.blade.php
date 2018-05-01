@@ -35,6 +35,7 @@
                             <th>Second Choice</th>
                             <th>Third Choice</th>
                         </tr>
+
                         @foreach($data['projects'] as $key=>$value)
                         <tr>
                             <td>{{$value['name']}}</td>
@@ -45,7 +46,7 @@
                                     $choice1 = 'Choice One: '.$student['first'];
                                     $choice2 = 'Choice Two: '.$student['second'];
                                     $choice3 = 'Choice Three: '.$student['third'];
-                                    $additional_info = 'Additional Info: '.$student['additional_info'];
+                                    $add_info = 'Additional Info: '.$student['additional_info'];
                                     @endphp
 
                                     <form action="{{ route('coordinator.allocation.update.view', [$session_id, $student['id']])}}" method="POST" enctype="multipart/form-data" class="form-horizontal">
@@ -57,7 +58,7 @@
                                                 onclick="allocate('first','{{$student['id']}}', '{{$key}}');"
                                                 data-html="true"
                                                 data-toggle="tooltip"
-                                                title="{{$name}} {{$choice1}} {{$choice2}} {{$choice3}} {{$additional_info}}">
+                                                title="{{$name}} {{$choice1}} {{$choice2}} {{$choice3}} {{$add_info}}">
                                                 <b>{{substr($student['fname'], 0,1)}}.{{substr($student['lname'], 0,1)}} </b>
                                         </button>
                                     </form>
@@ -71,7 +72,7 @@
                                     $choice1 = 'Choice One: '.$student['first'];
                                     $choice2 = 'Choice Two: '.$student['second'];
                                     $choice3 = 'Choice Three: '.$student['third'];
-                                    $additional_info = 'Additional Info: '.$student['additional_info'];
+                                    $add_info = 'Additional Info: '.$student['additional_info'];
                                     @endphp
 
                                     <form action="{{ route('coordinator.allocation.update.view', [$session_id, $student['id']])}}" method="POST" enctype="multipart/form-data" class="form-horizontal">
@@ -83,7 +84,7 @@
                                                 onclick="allocate('second','{{$student['id']}}', '{{$key}}');"
                                                 data-html="true"
                                                 data-toggle="tooltip"
-                                                title="{{$name}} {{$choice1}} {{$choice2}} {{$choice3}} {{$additional_info}}">
+                                                title="{{$name}} {{$choice1}} {{$choice2}} {{$choice3}} {{$add_info}}">
                                             <b>{{substr($student['fname'], 0,1)}}.{{substr($student['lname'], 0,1)}} </b>
                                         </button>
                                     </form>
@@ -97,7 +98,7 @@
                                     $choice1 = 'Choice One: '.$student['first'];
                                     $choice2 = 'Choice Two: '.$student['second'];
                                     $choice3 = 'Choice Three: '.$student['third'];
-                                    $additional_info = 'Additional Info: '.$student['additional_info'];
+                                    $add_info = 'Additional Info: '.$student['additional_info'];
                                     @endphp
 
                                     <form action="{{ route('coordinator.allocation.update.view', [$session_id, $student['id']])}}" method="POST" enctype="multipart/form-data" class="form-horizontal">
@@ -109,7 +110,7 @@
                                                 onclick="allocate('third','{{$student['id']}}', '{{$key}}');"
                                                 data-html="true"
                                                 data-toggle="tooltip"
-                                                title="{{$name}} {{$choice1}} {{$choice2}} {{$choice3}} {{$additional_info}}">
+                                                title="{{$name}} {{$choice1}} {{$choice2}} {{$choice3}} {{$add_info}}">
                                             <b>{{substr($student['fname'], 0,1)}}.{{substr($student['lname'], 0,1)}} </b>
                                         </button>
                                     </form>
